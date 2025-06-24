@@ -1,0 +1,8 @@
+#Tools
+.idea
+.vscode
+.vs
+#Build folders potentialy
+.out
+.build
+.build_linux
