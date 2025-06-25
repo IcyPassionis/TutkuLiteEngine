@@ -7,6 +7,7 @@
 #include "ResourceManager.h"
 #include "ShaderManager.h"
 #include "TimeState.h"
+#include <LiteDebugger.h>
 inline Settings settings;
 static TimeState timeState;
 int main()
@@ -16,11 +17,13 @@ int main()
         SetTargetFPS(settings.fps);
     CameraManager cameraManager;
     ResourceManager resourceManager;
+    DebugSettings& debugSettings = DebugSettings::Get();
     ShaderManager& shaderManager = ShaderManager::GetInstance();
     std::thread FixedThread(&TimeState::FixedUpdateThread, &timeState);
     while (!WindowShouldClose()) {
         UpdateCamera(&cameraManager.camera, CAMERA_FREE);
         DrawGame(cameraManager,resourceManager);
+        UpdateDebugKeys();
         timeState.UpdateDeltaTime();
     }
     CloseWindow();
