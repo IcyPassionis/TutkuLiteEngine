@@ -21,5 +21,5 @@ target_include_directories(Engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/St
 target_include_directories(Engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/Managers")
 
 #Linking libraries
-target_link_libraries(Engine PRIVATE raylib) # Linking raylib, easier game-rendering library, external
-target_link_libraries(Engine PRIVATE lighting_library)
+target_link_libraries(Engine PRIVATE raylib) # Linking raylib, external
+target_link_libraries(Engine PRIVATE lighting_library) # Linking lighting-shader library, internal
