@@ -16,3 +16,8 @@ void SetShininess(const float shininess) { // Sets shader's shininess
     ShaderManager &shaderManager = ShaderManager::GetInstance(); // Gets shader manager instance
     SetShaderValue(shaderManager.shader, shaderManager.shininessLoc, &shininess, SHADER_UNIFORM_FLOAT);
 }
+void ReloadShaders() {
+    ShaderManager &shaderManager = ShaderManager::GetInstance(); // Gets shader manager instance
+    UnloadShader(shaderManager.shader); // Unloads shader
+    shaderManager.LoadShaders(); // Loads shader
+}
