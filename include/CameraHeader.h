@@ -5,6 +5,12 @@
 #include <iostream>
 struct CameraManager {
     Camera3D camera;
+    CameraManager(const CameraManager&) = delete;
+    CameraManager& operator=(const CameraManager&) = delete;
+    static CameraManager& Get() {
+        static CameraManager instance;
+        return instance;
+    }
     CameraManager() {
         camera.position = Vector3(10, 20, 5);
         camera.target = Vector3(0, 0, 0);
@@ -14,4 +20,4 @@ struct CameraManager {
         std::cout << "Camera has been Initialized\n";
     }
 };
-#endif //CAMERAHEADER_H
+#endif

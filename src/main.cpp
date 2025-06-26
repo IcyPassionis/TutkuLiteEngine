@@ -18,7 +18,7 @@ int main()
     InitDraw();
     if (settings.isFpsLocked)
         SetTargetFPS(settings.fps);
-    CameraManager cameraManager;
+    CameraManager& cameraManager = CameraManager::Get();
     ResourceManager resourceManager;
     DebugSettings& debugSettings = DebugSettings::Get();
     ShaderManager& shaderManager = ShaderManager::GetInstance();

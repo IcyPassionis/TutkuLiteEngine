@@ -9,6 +9,8 @@ struct DebugSettings { // Debug setting struct
     bool ShowProfiler; // Shows profiler or not(includes ms latency)
     bool Show3DGrid; // Shows 3D Grid
     bool Show3DColliders; // Shows collider box in 3D Space
+    bool Show3DPosition; // Shows 3D Position of camera
+    bool Show2DPosition; // Shows 2D Position of mouse
     DebugSettings(const DebugSettings&) = delete;
     DebugSettings& operator=(const DebugSettings&) = delete;
     static DebugSettings& Get() {
@@ -22,6 +24,8 @@ private:
         ShowProfiler = false;
         Show3DGrid = false;
         Show3DColliders = false;
+        Show3DPosition = false;
+        Show2DPosition = false;
     }
 };
 
