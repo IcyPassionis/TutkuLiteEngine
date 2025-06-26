@@ -26,5 +26,7 @@ private:
 };
 
 // Functions
-void UpdateDebugKeys(); // Checks if debug keys have been pressed
+void UpdateDebug(); // Updates all debug-related things
+void CheckDebugKeys(DebugSettings& debugSettings); // Checks if any of debug keys has pressed and updates debug settings accordingly
+void UpdateDebugGUI(DebugSettings& debugSettings); // Updates debug GUI
 #endif

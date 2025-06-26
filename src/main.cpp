@@ -1,3 +1,5 @@
+#define RAYGUI_IMPLEMENTATION
+#include "raygui.h"
 #include <raylib.h>
 #include <CameraHeader.h>
 #include <thread>
@@ -8,6 +10,7 @@
 #include "ShaderManager.h"
 #include "TimeState.h"
 #include <LiteDebugger.h>
+
 inline Settings settings;
 static TimeState timeState;
 int main()
@@ -23,7 +26,7 @@ int main()
     while (!WindowShouldClose()) {
         UpdateCamera(&cameraManager.camera, CAMERA_FREE);
         DrawGame(cameraManager,resourceManager);
-        UpdateDebugKeys();
+        UpdateDebug();
         timeState.UpdateDeltaTime();
     }
     CloseWindow();

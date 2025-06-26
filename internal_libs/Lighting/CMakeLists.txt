@@ -9,5 +9,6 @@ add_library(lighting_library STATIC LightingManager.cpp)
 target_include_directories(lighting_library PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 #Includes raylib
 target_link_libraries(lighting_library PRIVATE raylib)
+target_link_libraries(lighting_library PRIVATE raygui)
 
 target_compile_definitions(lighting_library PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/shaders/")
