@@ -17,7 +17,6 @@ struct ShaderManager {
     friend void SetShininess(float shininess); // Sets shader's shininess
     friend void ReloadShaders(); // Reload shaders
 private:
-    int viewPosLoc; // viewPos is the camera's position in
     int materialColorLoc; // Material color location in the shader program
     int shininessLoc; // Shininess location in the shader program
     int ambientLoc; // Ambient color location in the shader program
@@ -37,7 +36,7 @@ private:
         float a = 0.2f;
         SetShaderValue(shader, ambientStrengthLoc, &a, SHADER_UNIFORM_FLOAT); // Sets shader's ambient strength
         SetShaderValue(shader, ambientLoc, (float[3]){0.3f, 0.4f, 0.6f}, SHADER_UNIFORM_VEC3); // Sets shader's ambient color
-        viewPosLoc = GetShaderLocation(shader, "viewPos"); // Gets viewPos location in the shader program
+        shader.locs[SHADER_LOC_VECTOR_VIEW] = GetShaderLocation(shader, "viewPos");
     }
 
 };
