@@ -33,6 +33,7 @@ private:
     int positionLoc; // Position location in the shader program
     int colorLoc; // Color location in the shader program
     int directionLoc; // Direction location in the shader program
+    int typeLoc; // Type location in the shader program
     int intensityLoc; // Intensity location in the shader program
 
     void FindShaderLocations() {  // This finds shader Locations in shader program at very start. This function shouldn't be entered second time
@@ -41,6 +42,7 @@ private:
         directionLoc = GetShaderLocation(shader, "lightDir"); // Gets light direction location in the shader program
         intensityLoc = GetShaderLocation(shader, "lightIntensity"); // Gets light intensity location in the shader program
         colorLoc = GetShaderLocation(shader, "lightColor"); // Gets light color location in the shader program
+        typeLoc = GetShaderLocation(shader, "lightType"); // Gets light type location in the shader program
     }
 
     void UpdateLightValues() {  // Update Shaders programs light values, this function should trigger when you move or change the intensity in light.
@@ -50,6 +52,7 @@ private:
         SetShaderValue(shader, intensityLoc, &intensity, SHADER_UNIFORM_FLOAT); // Sets Shader program's light intensity
         Vector3 normalizedColor = {color.r / 255.0f, color.g / 255.0f, color.b / 255.0f}; // Normalizes color for shader
         SetShaderValue(shader, colorLoc, &normalizedColor, SHADER_UNIFORM_VEC3); // Sets Shader program's light color
+        SetShaderValue(shader, typeLoc, &type, SHADER_UNIFORM_INT); // Sets Shader program's light type ( Directional, Point, Spot
     }
 };
 #endif
