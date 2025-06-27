@@ -15,7 +15,7 @@ struct ShaderManager {
     friend void EndShader(); // Shader operations stop, this function always calls at drawGameMethod
     friend void SetMaterialColor(Color materialColor); // Sets shader's material color
     friend void SetShininess(float shininess); // Sets shader's shininess
-    friend void ReloadShaders(); // Reloads shaders
+    friend void ReloadShaders(); // Reload shaders
 private:
     int viewPosLoc; // viewPos is the camera's position in
     int materialColorLoc; // Material color location in the shader program
@@ -29,7 +29,7 @@ private:
         UnloadShader(shader);
     }
     void LoadShaders() { // Loads shaders
-        shader = LoadShader(RESOURCES_PATH "shaders/glsl100/lighting.vert",RESOURCES_PATH "shaders/glsl100/lighting.frag");
+        shader = LoadShader(SHADERS_PATH "glsl100/lighting.vert",SHADERS_PATH "glsl100/lighting.frag");
         ambientLoc = GetShaderLocation(shader, "ambientColor"); // Ambient Color location in the shader program
         ambientStrengthLoc = GetShaderLocation(shader, "ambientStrength"); // Ambient strength location in the shader program
         materialColorLoc = GetShaderLocation(shader, "materialColor"); // Material color location in the shader program

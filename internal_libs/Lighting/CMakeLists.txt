@@ -11,4 +11,4 @@ target_include_directories(lighting_library PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(lighting_library PRIVATE raylib)
 target_link_libraries(lighting_library PRIVATE raygui)
 
-target_compile_definitions(lighting_library PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/shaders/")
+target_compile_definitions(lighting_library PUBLIC SHADERS_PATH="${CMAKE_CURRENT_SOURCE_DIR}/shaders/")
