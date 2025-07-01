@@ -2,10 +2,13 @@
 #include <iostream>
 #include <raylib.h>
 #include <unordered_map>
+#include <vector>
+
+#include "Lighting.h"
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
 struct ResourceManager {
-    std::unordered_map<std::string, Model> Models ;
+    std::unordered_map<std::string, Model> Models;
     Model barrel;
     ResourceManager() {
         // This Constructor only loads things we know will always be loaded in game

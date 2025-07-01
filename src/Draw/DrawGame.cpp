@@ -22,7 +22,7 @@ void DrawGame(CameraManager &cameraManager, ResourceManager &rm) {
     if (DebugSettings::Get().Show3DGrid)
         DrawGrid(100,10);
     BeginShader(cameraManager.camera);
-    Light sun(LIGHT_POINT,Vector3(10, 2, 0), Vector3(0, 0, 0), WHITE,LightIntensity);
+    Light sun(LIGHT_DIRECTIONAL,Vector3(10, 2, 0), Vector3(0, 0, 0), WHITE,LightIntensity);
     rm.barrel.materials[0].shader = ShaderManager::GetInstance().shader;
     rm.barrel.materials[1].shader = ShaderManager::GetInstance().shader;
     rm.barrel.materials[2].shader = ShaderManager::GetInstance().shader;
@@ -41,15 +41,6 @@ void DrawGame(CameraManager &cameraManager, ResourceManager &rm) {
         LightIntensity++;
         std::cout << "Light Intensity: " << LightIntensity << "\n";
     }
-    if (IsKeyDown(KEY_UP)) {
-        Shininess++;
-        std::cout << "Shininess: " << Shininess << "\n";
-    }
-    else if (IsKeyDown(KEY_DOWN)) {
-        Shininess--;
-        std::cout << "Shininess: " << Shininess << "\n";
-    }
-    SetShininess(Shininess);
     EndShader();
     EndMode3D();
     EndDrawing();

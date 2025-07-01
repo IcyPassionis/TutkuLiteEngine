@@ -2,7 +2,7 @@
 
 #ifndef LIGHTING_H
 #define LIGHTING_H
-#define MAX_LIGHTS 99
+#define MAX_LIGHTS 20
 #include <raylib.h>
 #include <ShaderManager.h>
 enum TypeOfLight { // Lights type enum
@@ -10,6 +10,7 @@ enum TypeOfLight { // Lights type enum
     LIGHT_POINT, // Point light mostly used for torch like items
     LIGHT_SPOT, // Spotlight mostly used for flashlight
 };
+static int currentLightCount;
 struct Light {
     TypeOfLight type; // Lights type
     bool isEnabled; // Checks if light is enabled or not
@@ -38,11 +39,15 @@ private:
 
     void FindShaderLocations() {  // This finds shader Locations in shader program at very start. This function shouldn't be entered second time
         Shader &shader = ShaderManager::GetInstance().shader; // Gets shaderManager singleton and then gets its shader as a reference
-        positionLoc = GetShaderLocation(shader, "lightPos"); // Gets light position location in the shader program
-        directionLoc = GetShaderLocation(shader, "lightDir"); // Gets light direction location in the shader program
-        intensityLoc = GetShaderLocation(shader, "lightIntensity"); // Gets light intensity location in the shader program
-        colorLoc = GetShaderLocation(shader, "lightColor"); // Gets light color location in the shader program
-        typeLoc = GetShaderLocation(shader, "lightType"); // Gets light type location in the shader program
+        enabledLoc = GetShaderLocation(shader, TextFormat("lights[%i].enabled", 0)); // Gets light enabled location in the shader program
+        positionLoc = GetShaderLocation(shader, TextFormat("lights[%i].position", 0)); // Gets light position location in the shader program
+        directionLoc = GetShaderLocation(shader, TextFormat("lights[%i].direction", 0)); // Gets light direction location in the shader program
+        intensityLoc = GetShaderLocation(shader, TextFormat("lights[%i].intensity", 0)); // Gets light intensity location in the shader program
+        colorLoc = GetShaderLocation(shader, TextFormat("lights[%i].color", 0)); // Gets light color location in the shader program
+        typeLoc = GetShaderLocation(shader, TextFormat("lights[%i].type", 0)); // Gets light type location in the shader program
+        currentLightCount++; // Increases current light count by 1
+        int currentLightCountLoc = GetShaderLocation(shader, "currentLights"); // Gets current light count location in the shader program
+        SetShaderValue(shader, currentLightCountLoc, &currentLightCount, SHADER_UNIFORM_INT); // Sets current light count in the shader program
     }
 
     void UpdateLightValues() {  // Update Shaders programs light values, this function should trigger when you move or change the intensity in light.

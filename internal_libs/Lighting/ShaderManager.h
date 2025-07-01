@@ -3,6 +3,7 @@
 #ifndef SHADERMANAGER_H
 #define SHADERMANAGER_H
 #include <raylib.h>
+
 struct ShaderManager {
     Shader shader; // Loaded main shader
     ShaderManager(const ShaderManager&) = delete;
@@ -33,7 +34,7 @@ private:
         ambientStrengthLoc = GetShaderLocation(shader, "ambientStrength"); // Ambient strength location in the shader program
         materialColorLoc = GetShaderLocation(shader, "materialColor"); // Material color location in the shader program
         shininessLoc = GetShaderLocation(shader, "shininess"); // Shininess location in the shader program
-        float a = 0.32f;
+        float a = 0.25f;
         SetShaderValue(shader, ambientStrengthLoc, &a, SHADER_UNIFORM_FLOAT); // Sets shader's ambient strength
         SetShaderValue(shader, ambientLoc, (float[3]){0.3f, 0.4f, 0.6f}, SHADER_UNIFORM_VEC3); // Sets shader's ambient color
         shader.locs[SHADER_LOC_VECTOR_VIEW] = GetShaderLocation(shader, "viewPos");
@@ -43,10 +44,6 @@ private:
 // Draw shaders method
 void BeginShader(Camera &camera); // Shader operation begins, this function always calls at drawGame after 3d mode has been started
 void EndShader(); // Shader operations stop, this function always calls at drawGameMethod
-
-// Set Material value method
-void SetMaterialColor(Color materialColor); // Sets shader's material color
-void SetShininess(float shininess); // Sets shader's shininess
 
 void ReloadShaders(); // Reload shaders
 #endif

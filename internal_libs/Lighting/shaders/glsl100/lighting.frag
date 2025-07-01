@@ -1,28 +1,36 @@
 #version 100
 precision mediump float;
 
+// Light "Enums"
+#define MAX_LIGHTS 20
+#define LIGHT_DIRECTIONAL 0
+#define LIGHT_POINT 1
+#define LIGHT_SPOT 2
+
 varying vec3 fragPosition;
 varying vec3 fragNormal;
 varying vec2 fragTexCoord;
 
 varying vec3 viewDir;
 
-#define LIGHT_DIRECTIONAL 0
-#define LIGHT_POINT 1
-
-uniform vec3 lightColor;
-uniform float lightIntensity;
-uniform int lightType;
-uniform vec3 lightPos;
-uniform vec3 lightDir;
-
+struct Light
+{
+    bool enabled;
+    int type;
+    float intensity;
+    vec3 position;
+    vec3 direction;
+    vec4 color;
+};
 uniform vec3 ambientColor; // Ambient light color shows when there is no light, so this base light for everything.
 uniform float ambientStrength;
+uniform int currentLights;
 
 varying vec4 fragColor;
 uniform float shininess; // Specular shinines(32 default)
 
 uniform vec4 colDiffuse;
+uniform Light lights[MAX_LIGHTS];
 uniform sampler2D texture0;
 
 void main()
@@ -33,7 +41,6 @@ void main()
     vec3 viewDirection = normalize(viewDir);
     vec3 specular = vec3(0.0);
 
-
     vec4 tint = colDiffuse * fragColor;
 
     // Ambient Lighting(or just base lighting)
@@ -41,21 +48,24 @@ void main()
 
     // Diffuse Lighting
     // Lights
-    vec3 light = vec3(0.0);
-    if (lightType == LIGHT_DIRECTIONAL) {
-        light = -normalize(lightDir - lightPos);
+    for(int i = 0; i < currentLights; i++ )
+    {
+        if(lights[i].enabled) {
+            vec3 light = vec3(0.0);
+            if (lights[i].type == LIGHT_DIRECTIONAL) {
+                light = -normalize(lights[i].direction - lights[i].position);
+            }
+            if (lights[i].type == LIGHT_POINT){
+                light = normalize(lights[i].position - fragPosition);
+            }
+            float NdotL = max(dot(normal, light), 0.0) * (lights[i].intensity * 0.5);
+            lightDot += lights[i].color.rgb * NdotL;
+
+            float specCo = 0.0;
+            if (NdotL > 0.0) specCo = pow(max(0.0, dot(viewDirection, reflect(-(light), normal))), 16.0);// 16 refers to shine
+            specular += specCo * (lights[i].intensity * 0.1);
+        }
     }
-    if(lightType == LIGHT_POINT){
-        light = normalize(lightPos - fragPosition);
-    }
-    float NdotL = max(dot(normal, light), 0.0) * (lightIntensity * 0.5);
-    lightDot += lightColor * NdotL;
-
-    float specCo = 0.0;
-    if (NdotL > 0.0) specCo = pow(max(0.0, dot(viewDirection, reflect(-(light), normal))), 16.0); // 16 refers to shine
-    specular += specCo * (lightIntensity * 0.1);
-
-
     vec4 result = (texelColor*((tint + vec4(specular, 1.0))*vec4(lightDot, 1.0)));
     result += texelColor*(ambient/10.0);
     gl_FragColor =  pow(result, vec4(1.0/2.2));
