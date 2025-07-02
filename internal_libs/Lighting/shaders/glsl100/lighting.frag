@@ -53,7 +53,7 @@ void main()
         if(lights[i].enabled) {
             vec3 light = vec3(0.0);
             if (lights[i].type == LIGHT_DIRECTIONAL) {
-                light = -normalize(lights[i].direction - lights[i].position);
+                light = normalize(-lights[i].direction);
             }
             if (lights[i].type == LIGHT_POINT){
                 light = normalize(lights[i].position - fragPosition);
