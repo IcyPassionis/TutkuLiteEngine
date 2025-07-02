@@ -36,7 +36,8 @@ private:
         shininessLoc = GetShaderLocation(shader, "shininess"); // Shininess location in the shader program
         float a = 0.25f;
         SetShaderValue(shader, ambientStrengthLoc, &a, SHADER_UNIFORM_FLOAT); // Sets shader's ambient strength
-        SetShaderValue(shader, ambientLoc, (float[3]){0.3f, 0.4f, 0.6f}, SHADER_UNIFORM_VEC3); // Sets shader's ambient color
+        float ambientColor[3] = {0.3f, 0.4f, 0.6f};
+        SetShaderValue(shader, ambientLoc, ambientColor , SHADER_UNIFORM_VEC3); // Sets shader's ambient color
         shader.locs[SHADER_LOC_VECTOR_VIEW] = GetShaderLocation(shader, "viewPos");
     }
 
