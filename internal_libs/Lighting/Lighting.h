@@ -52,6 +52,7 @@ private:
 
     void UpdateLightValues() {  // Update Shaders programs light values, this function should trigger when you move or change the intensity in light.
         Shader &shader = ShaderManager::GetInstance().shader; // Gets shaderManager singleton and then gets its shader as a reference
+        SetShaderValue(shader, enabledLoc, &isEnabled, SHADER_UNIFORM_INT); // Sets shader program's light enabled
         SetShaderValue(shader, positionLoc, &position, SHADER_UNIFORM_VEC3); // Sets shader program's light position
         SetShaderValue(shader, directionLoc, &direction, SHADER_UNIFORM_VEC3); // Sets Shader program's light direction
         SetShaderValue(shader, intensityLoc, &intensity, SHADER_UNIFORM_FLOAT); // Sets Shader program's light intensity
