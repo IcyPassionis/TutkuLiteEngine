@@ -21,11 +21,11 @@ private:
     DebugSettings() {
         inDebugMode = true;
         ShowFps = true;
-        ShowProfiler = false;
-        Show3DGrid = false;
+        ShowProfiler = true;
+        Show3DGrid = true;
         Show3DColliders = false;
-        Show3DPosition = false;
-        Show2DPosition = false;
+        Show3DPosition = true;
+        Show2DPosition = true;
     }
 };
 
