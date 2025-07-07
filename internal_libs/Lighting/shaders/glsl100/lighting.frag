@@ -1,8 +1,9 @@
 #version 100
 precision mediump float;
 
-// Light "Enums"
+
 #define MAX_LIGHTS 20
+// Light "Enums" to int
 #define LIGHT_DIRECTIONAL 0
 #define LIGHT_POINT 1
 #define LIGHT_SPOT 2
@@ -11,7 +12,7 @@ varying vec3 fragPosition;
 varying vec3 fragNormal;
 varying vec2 fragTexCoord;
 
-varying vec3 viewDir;
+varying vec3 viewDir; // Main Camera's direction to frag
 
 struct Light
 {
@@ -22,14 +23,16 @@ struct Light
     vec3 direction;
     vec3 color;
 };
+uniform Light lights[MAX_LIGHTS];
+
 uniform vec3 ambientColor; // Ambient light color shows when there is no light, so this base light for everything.
-uniform float ambientStrength;
+uniform float ambientStrength; // Ambient strength, it could changed in some areas?
+uniform vec3 viewPos;
 
 varying vec4 fragColor;
-uniform float shininess; // Specular shinines(32 default)
+uniform float shininess;
 
 uniform vec4 colDiffuse;
-uniform Light lights[MAX_LIGHTS];
 uniform sampler2D texture0;
 
 void main()
@@ -57,9 +60,9 @@ void main()
             if (lights[i].type == LIGHT_POINT){
                 light = normalize(lights[i].position - fragPosition);
             }
-            float NdotL = max(dot(normal, light), 0.0) * (lights[i].intensity * 0.5);
+            float NdotL = max(dot(normal, light), 0.0) * (lights[i].intensity);
             lightDot += lights[i].color.rgb * NdotL;
-
+            // Specular lighting
             float specCo = 0.0;
             if (NdotL > 0.0) specCo = pow(max(0.0, dot(viewDirection, reflect(-(light), normal))), 16.0);// 16 refers to shine
             specular += specCo * (lights[i].intensity * 0.1);
@@ -67,5 +70,8 @@ void main()
     }
     vec4 result = (texelColor*((tint + vec4(specular, 1.0))*vec4(lightDot, 1.0)));
     result += texelColor*(ambient/10.0);
-    gl_FragColor =  pow(result, vec4(1.0/2.2));
+
+    // Gamma correction
+    gl_FragColor = pow(result, vec4(1.0/2.2));
+
 }
