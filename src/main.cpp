@@ -22,6 +22,7 @@ int main()
     ResourceManager resourceManager;
     DebugSettings& debugSettings = DebugSettings::Get();
     ShaderManager& shaderManager = ShaderManager::GetInstance();
+    resourceManager.lights.push_back(Light(LIGHT_DIRECTIONAL, Vector3(0, 0, 0), Vector3(15, -2, 15), WHITE, 1));
     std::thread FixedThread(&TimeState::FixedUpdateThread, &timeState);
     while (!WindowShouldClose()) {
         UpdateCamera(&cameraManager.camera, CAMERA_FREE);

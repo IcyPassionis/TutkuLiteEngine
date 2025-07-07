@@ -15,16 +15,15 @@ varying vec3 viewDir;
 
 struct Light
 {
-    bool enabled;
+    int enabled;
     int type;
     float intensity;
     vec3 position;
     vec3 direction;
-    vec4 color;
+    vec3 color;
 };
 uniform vec3 ambientColor; // Ambient light color shows when there is no light, so this base light for everything.
 uniform float ambientStrength;
-uniform int currentLights;
 
 varying vec4 fragColor;
 uniform float shininess; // Specular shinines(32 default)
@@ -48,9 +47,9 @@ void main()
 
     // Diffuse Lighting
     // Lights
-    for(int i = 0; i < currentLights; i++ )
+    for(int i = 0; i < MAX_LIGHTS; i++ )
     {
-        if(lights[i].enabled) {
+        if(lights[i].enabled == 1) {
             vec3 light = vec3(0.0);
             if (lights[i].type == LIGHT_DIRECTIONAL) {
                 light = normalize(-lights[i].direction);

@@ -22,14 +22,13 @@ void DrawGame(CameraManager &cameraManager, ResourceManager &rm) {
     if (DebugSettings::Get().Show3DGrid)
         DrawGrid(100,10);
     BeginShader(cameraManager.camera);
-    Light sun(LIGHT_DIRECTIONAL,Vector3(10, 2, 0), Vector3(0, 0, 0), WHITE,LightIntensity);
     rm.barrel.materials[0].shader = ShaderManager::GetInstance().shader;
     rm.barrel.materials[1].shader = ShaderManager::GetInstance().shader;
     rm.barrel.materials[2].shader = ShaderManager::GetInstance().shader;
     rm.barrel.materials[3].shader = ShaderManager::GetInstance().shader;
-    DrawModel(rm.barrel, Vector3(0,5,0), 20, WHITE);
+    //DrawModel(rm.barrel, Vector3(0,5,0), 20, WHITE);
 
-    //DrawCube(Vector3(0, 5, 0),10,10,10,RED);
+    DrawCube(Vector3(0, 5, 0),10,10,10,RED);
     //SetMaterialColor(WHITE);
     DrawPlane(cubePosition,Vector2(100,100),BLUE);
     //SetMaterialColor(WHITE);
