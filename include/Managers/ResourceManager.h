@@ -9,6 +9,7 @@
 #define RESOURCEMANAGER_H
 struct ResourceManager {
     std::unordered_map<std::string, Model> Models;
+    std::vector<Light> lights;
     Model barrel;
     ResourceManager() {
         // This Constructor only loads things we know will always be loaded in game
