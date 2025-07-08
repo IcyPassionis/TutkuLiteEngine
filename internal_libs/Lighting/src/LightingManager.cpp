@@ -1,5 +1,7 @@
-#include "ShaderManager.h"
+#include <iostream>
 
+#include "../include/ShaderManager.h"
+#include "../include/Lighting.h"
 void BeginShader(Camera &camera) {
     ShaderManager &shaderManager = ShaderManager::Get(); // Gets shader manager instance
     SetShaderValue(shaderManager.shader, shaderManager.shader.locs[SHADER_LOC_VECTOR_VIEW], &camera.position, SHADER_UNIFORM_VEC3); // Sets shader's viewPos variable to camera's position
@@ -13,4 +15,5 @@ void ReloadShaders() {
     ShaderManager &shaderManager = ShaderManager::Get(); // Gets shader manager instance
     shaderManager.UnloadShaders(); // Unloads shader
     shaderManager.LoadShaders(); // Loads shader
+    std::cout << "INFO: Shaders Reloaded\n";
 }

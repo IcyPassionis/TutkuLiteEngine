@@ -4,9 +4,9 @@ cmake_minimum_required(VERSION 3.31)
 set(CMAKE_CXX_STANDARD 20)
 
 #Include source files and makes it an library
-add_library(lighting_library STATIC LightingManager.cpp)
+add_library(lighting_library STATIC src/LightingManager.cpp src/Lighting.cpp src/ShaderManager.cpp)
 #Includes headers
-target_include_directories(lighting_library PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(lighting_library PUBLIC ${CMAKE_CURRENT_SOURCE_DIR/include})
 #Includes raylib
 target_link_libraries(lighting_library PRIVATE raylib)
 target_link_libraries(lighting_library PRIVATE raygui)
