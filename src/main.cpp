@@ -19,7 +19,7 @@ int main()
     if (settings.isFpsLocked)
         SetTargetFPS(settings.fps);
     CameraManager& cameraManager = CameraManager::Get();
-    ResourceManager resourceManager;
+    ResourceManager& resourceManager = ResourceManager::Get();
     DebugSettings& debugSettings = DebugSettings::Get();
     ShaderManager& shaderManager = ShaderManager::GetInstance();
     resourceManager.lights.push_back(Light(LIGHT_DIRECTIONAL, Vector3(0, 0, 0), Vector3(15, -2, 15), WHITE, 1));

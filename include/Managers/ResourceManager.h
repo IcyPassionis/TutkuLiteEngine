@@ -11,6 +11,12 @@ struct ResourceManager {
     std::unordered_map<std::string, Model> Models;
     std::vector<Light> lights;
     Model barrel;
+    ResourceManager (const ResourceManager&) = delete;
+    ResourceManager& operator=(const ResourceManager&) = delete;
+    static ResourceManager& Get() {
+        static ResourceManager instance;
+        return instance;
+    }
     ResourceManager() {
         // This Constructor only loads things we know will always be loaded in game
         barrel = LoadModel(RESOURCES_PATH "models/barrel.gltf");
