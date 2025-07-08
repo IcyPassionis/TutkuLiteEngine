@@ -14,7 +14,7 @@ enum ScreenState {
 struct GameState {
     ScreenState screenState; // This saves currently which state is player
     bool isScreenOnTransition; // If screen is on transition an animation will play
-    bool isFinished; // Is game finished
+    bool isFinished; // Is the game finished
     GameState() {
         screenState = MAIN_MENU;
         isScreenOnTransition = false;
@@ -27,10 +27,10 @@ struct WindowState {
     unsigned int height; // Screens height
     std::string title; // Windows title text
     WindowState(Settings &settings) {
-        // Default Resolution, if settings file don't yet create
+        // Default Resolution, if a settings file doesn't yet create
         if (settings.windowHeight == 0 || settings.windowWidth == 0) {
-            width = 1280;
-            height = 720;
+            width = GetScreenWidth();
+            height = GetScreenHeight();
         }
         else {
             width = settings.windowWidth;
