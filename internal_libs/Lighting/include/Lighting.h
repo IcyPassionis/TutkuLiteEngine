@@ -29,6 +29,7 @@ struct Light {
         this->intensity = intensity; // Sets light intensity
         FindShaderLocations(); // Finds shader program related variables
     }
+    void ReloadLight(); // Reload Shaders of light
 private:
     // Shader locations
     int enabledLoc; // Enabled location in the shader program

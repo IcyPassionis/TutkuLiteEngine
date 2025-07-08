@@ -36,7 +36,9 @@ private:
     }
     void LoadShaders();// Loads shaders
 
-    void UnloadShaders();
+    void UnloadShaders(); // Unload shader
+
+    void ReloadLights(); // Reload every Light to use current shader.
 
 };
 // Draw shaders method

@@ -1,8 +1,8 @@
-#include "../include/Lighting.h"
+#include "Lighting.h"
 
 #include <iostream>
 
-#include "../include/ShaderManager.h"
+#include "ShaderManager.h"
 void Light::FindShaderLocations() {
     Shader &shader = ShaderManager::Get().shader; // Gets shaderManager singleton and then gets its shader as a reference
     enabledLoc = GetShaderLocation(shader, TextFormat("lights[%i].enabled", currentLightCount)); // Gets light enabled location in the shader program
@@ -34,4 +34,9 @@ void Light::UpdateLightValues() {
     SetShaderValue(shader, colorLoc, &normalizedColor, SHADER_UNIFORM_VEC3); // Sets Shader program's light color
     SetShaderValue(shader, typeLoc, &type, SHADER_UNIFORM_INT); // Sets Shader program's light type ( Directional, Point, Spot
     std::cout << "INFO: Light Values Updated\n";
+}
+
+void Light::ReloadLight() {
+    FindShaderLocations();
+    UpdateLightValues();
 }

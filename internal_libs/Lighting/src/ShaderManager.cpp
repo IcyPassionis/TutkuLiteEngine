@@ -1,5 +1,5 @@
-#include "../include/ShaderManager.h"
-#include "../include/Lighting.h""
+#include "ShaderManager.h"
+#include "Lighting.h"
 
 void ShaderManager::LoadShaders() {
     shader = LoadShader(SHADERS_PATH "glsl100/lighting.vert",SHADERS_PATH "glsl100/lighting.frag");
@@ -19,3 +19,12 @@ void ShaderManager::UnloadShaders() {
     UnloadShader(shader);
     isInitialized = false;
 }
+
+void ShaderManager::ReloadLights() {
+    if (lights.size() > 0) {
+        for (int i = 0; i < lights.size(); i++) {
+            lights[i].ReloadLight();
+        }
+    }
+}
+
