@@ -6,12 +6,16 @@
 
 struct ShaderManager {
     Shader shader; // Loaded main shader
+    bool isInitialized; // Checks if shaderManager is initialized or not
+
     ShaderManager(const ShaderManager&) = delete;
     ShaderManager& operator=(const ShaderManager&) = delete;
     static ShaderManager& Get() { // Gets the instance of shaderManager singleton
         static ShaderManager instance;
         return instance;
     }
+
+    // Friend Functions
     friend void BeginShader(Camera &camera); // Shader operation begins, this function always calls at drawGame Method
     friend void EndShader(); // Shader operations stop, this function always calls at drawGameMethod
     friend void SetMaterialColor(Color materialColor); // Sets shader's material color
@@ -26,7 +30,7 @@ private:
         LoadShaders();
     }
     ~ShaderManager() {
-        UnloadShader(shader);
+        UnloadShaders();
     }
     void LoadShaders() { // Loads shaders
         shader = LoadShader(SHADERS_PATH "glsl100/lighting.vert",SHADERS_PATH "glsl100/lighting.frag");
@@ -39,6 +43,11 @@ private:
         float ambientColor[3] = {0.3f, 0.4f, 0.6f};
         SetShaderValue(shader, ambientLoc, ambientColor , SHADER_UNIFORM_VEC3); // Sets shader's ambient color
         shader.locs[SHADER_LOC_VECTOR_VIEW] = GetShaderLocation(shader, "viewPos");
+        isInitialized = true;
+    }
+    void UnloadShaders() {
+        UnloadShader(shader);
+        isInitialized = false;
     }
 
 };

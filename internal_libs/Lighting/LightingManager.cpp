@@ -11,6 +11,6 @@ void EndShader() {
 
 void ReloadShaders() {
     ShaderManager &shaderManager = ShaderManager::Get(); // Gets shader manager instance
-    UnloadShader(shaderManager.shader); // Unloads shader
+    shaderManager.UnloadShaders(); // Unloads shader
     shaderManager.LoadShaders(); // Loads shader
 }
