@@ -8,7 +8,7 @@ struct ShaderManager {
     Shader shader; // Loaded main shader
     ShaderManager(const ShaderManager&) = delete;
     ShaderManager& operator=(const ShaderManager&) = delete;
-    static ShaderManager& GetInstance() { // Gets the instance of shaderManager singleton
+    static ShaderManager& Get() { // Gets the instance of shaderManager singleton
         static ShaderManager instance;
         return instance;
     }

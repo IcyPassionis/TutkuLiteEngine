@@ -37,7 +37,7 @@ private:
     int intensityLoc; // Intensity location in the shader program
 
     void FindShaderLocations() {  // This finds shader Locations in shader program at very start. This function shouldn't be entered second time
-        Shader &shader = ShaderManager::GetInstance().shader; // Gets shaderManager singleton and then gets its shader as a reference
+        Shader &shader = ShaderManager::Get().shader; // Gets shaderManager singleton and then gets its shader as a reference
         enabledLoc = GetShaderLocation(shader, TextFormat("lights[%i].enabled", currentLightCount)); // Gets light enabled location in the shader program
         positionLoc = GetShaderLocation(shader, TextFormat("lights[%i].position", currentLightCount)); // Gets light position location in the shader program
         directionLoc = GetShaderLocation(shader, TextFormat("lights[%i].direction", currentLightCount)); // Gets light direction location in the shader program
@@ -57,7 +57,7 @@ private:
     }
 
     void UpdateLightValues() {  // Update Shaders programs light values, this function should trigger when you move or change the intensity in light.
-        Shader &shader = ShaderManager::GetInstance().shader; // Gets shaderManager singleton and then gets its shader as a reference
+        Shader &shader = ShaderManager::Get().shader; // Gets shaderManager singleton and then gets its shader as a reference
         int isEnabledInt = isEnabled ? 1 : 0; // Converts isEnabled to int
         SetShaderValue(shader, enabledLoc, &isEnabledInt, SHADER_UNIFORM_INT); // Sets shader program's light enabled
         SetShaderValue(shader, positionLoc, &position, SHADER_UNIFORM_VEC3); // Sets shader program's light position

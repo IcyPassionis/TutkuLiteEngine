@@ -22,10 +22,10 @@ void DrawGame(CameraManager &cameraManager, ResourceManager &rm) {
     if (DebugSettings::Get().Show3DGrid)
         DrawGrid(100,10);
     BeginShader(cameraManager.camera);
-    rm.barrel.materials[0].shader = ShaderManager::GetInstance().shader;
-    rm.barrel.materials[1].shader = ShaderManager::GetInstance().shader;
-    rm.barrel.materials[2].shader = ShaderManager::GetInstance().shader;
-    rm.barrel.materials[3].shader = ShaderManager::GetInstance().shader;
+    rm.barrel.materials[0].shader = ShaderManager::Get().shader;
+    rm.barrel.materials[1].shader = ShaderManager::Get().shader;
+    rm.barrel.materials[2].shader = ShaderManager::Get().shader;
+    rm.barrel.materials[3].shader = ShaderManager::Get().shader;
     //DrawModel(rm.barrel, Vector3(0,5,0), 20, WHITE);
 
     DrawCube(Vector3(0, 5, 0),10,10,10,RED);
@@ -44,3 +44,4 @@ void DrawGame(CameraManager &cameraManager, ResourceManager &rm) {
     EndMode3D();
     EndDrawing();
 }
+
