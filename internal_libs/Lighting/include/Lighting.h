@@ -20,6 +20,7 @@ struct Light {
     Vector3 position; // Lights position
     Vector3 direction; // Lights direction
     Color color; // Lights color
+    Camera3D camera;
     Light(TypeOfLight type, Vector3 position,Vector3 direction, Color color,float intensity) {
         this->type = type; // Sets light type
         isEnabled = true; // Sets light enabled by default

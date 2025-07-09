@@ -10,6 +10,7 @@ struct ShaderManager {
     Shader shader; // Loaded main shader
     bool isInitialized; // Checks if shaderManager is initialized or not
     std::vector<Light> lights;
+    RenderTexture2D shadowMap; // Shadow map texture
     ShaderManager(const ShaderManager&) = delete;
     ShaderManager& operator=(const ShaderManager&) = delete;
     static ShaderManager& Get() { // Gets the instance of shaderManager singleton
@@ -38,7 +39,9 @@ private:
 
     void UnloadShaders(); // Unload shader
 
-    void ReloadLights(); // Reload every Light to use current shader.
+    void ReloadLights(); // Reload every Light to use the current shader.
+
+    void UpdateShadowMap();
 
 };
 // Draw shaders method

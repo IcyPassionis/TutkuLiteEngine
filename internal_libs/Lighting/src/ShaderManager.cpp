@@ -1,5 +1,6 @@
 #include "ShaderManager.h"
 #include "Lighting.h"
+#include "../../../include/DrawGame.h"
 
 void ShaderManager::LoadShaders() {
     shader = LoadShader(SHADERS_PATH "glsl100/lighting.vert",SHADERS_PATH "glsl100/lighting.frag");
@@ -26,5 +27,13 @@ void ShaderManager::ReloadLights() {
             lights[i].ReloadLight();
         }
     }
+}
+
+void ShaderManager::UpdateShadowMap() {
+    BeginTextureMode(shadowMap);
+    BeginMode3D(lights[0].camera);
+    DrawScene();
+    EndMode3D();
+    EndTextureMode();
 }
 

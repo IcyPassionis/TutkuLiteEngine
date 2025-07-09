@@ -43,8 +43,6 @@ void DrawScene(ResourceManager &rm) {
     //DrawModel(rm.barrel, Vector3(0,5,0), 20, WHITE);
     Vector3 cubePosition = Vector3(0, 0, 0);
     DrawCube(Vector3(0, 5, 0),10,10,10,RED);
-    //SetMaterialColor(WHITE);
     DrawPlane(cubePosition,Vector2(100,100),BLUE);
-    //SetMaterialColor(WHITE);
 }
 
