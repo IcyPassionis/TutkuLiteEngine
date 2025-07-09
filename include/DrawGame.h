@@ -7,4 +7,5 @@
 #include <ShaderManager.h>
 void DrawGame(CameraManager &cameraManager, ResourceManager &rm);
 void InitDraw();
+void DrawScene();
 #endif //DRAWGAME_H

@@ -1,8 +1,9 @@
+#include "DrawGame.h"
+
 #include <raylib.h>
 #include "CameraHeader.h"
 #include "ResourceManager.h"
 #include <ShaderManager.h>
-#include <Lighting.h>
 #include "LiteDebugger.h"
 #include "States.h"
 static WindowState ws = settings;
@@ -22,16 +23,7 @@ void DrawGame(CameraManager &cameraManager, ResourceManager &rm) {
     if (DebugSettings::Get().Show3DGrid)
         DrawGrid(100,10);
     BeginShader(cameraManager.camera);
-    rm.barrel.materials[0].shader = ShaderManager::Get().shader;
-    rm.barrel.materials[1].shader = ShaderManager::Get().shader;
-    rm.barrel.materials[2].shader = ShaderManager::Get().shader;
-    rm.barrel.materials[3].shader = ShaderManager::Get().shader;
-    //DrawModel(rm.barrel, Vector3(0,5,0), 20, WHITE);
-
-    DrawCube(Vector3(0, 5, 0),10,10,10,RED);
-    //SetMaterialColor(WHITE);
-    DrawPlane(cubePosition,Vector2(100,100),BLUE);
-    //SetMaterialColor(WHITE);
+    DrawScene();
     if (IsKeyDown(KEY_LEFT)) {
         LightIntensity--;
         std::cout << "Light Intensity: " << LightIntensity << "\n";
@@ -43,5 +35,17 @@ void DrawGame(CameraManager &cameraManager, ResourceManager &rm) {
     EndShader();
     EndMode3D();
     EndDrawing();
+}
+void DrawScene() {
+    rm.barrel.materials[0].shader = ShaderManager::Get().shader;
+    rm.barrel.materials[1].shader = ShaderManager::Get().shader;
+    rm.barrel.materials[2].shader = ShaderManager::Get().shader;
+    rm.barrel.materials[3].shader = ShaderManager::Get().shader;
+    //DrawModel(rm.barrel, Vector3(0,5,0), 20, WHITE);
+
+    DrawCube(Vector3(0, 5, 0),10,10,10,RED);
+    //SetMaterialColor(WHITE);
+    DrawPlane(cubePosition,Vector2(100,100),BLUE);
+    //SetMaterialColor(WHITE);
 }
 
