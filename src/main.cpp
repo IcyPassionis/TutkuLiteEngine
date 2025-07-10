@@ -13,19 +13,17 @@
 
 inline Settings settings;
 static TimeState timeState;
+void InitializeSingletons();
 int main()
 {
     InitDraw();
     if (settings.isFpsLocked)
         SetTargetFPS(settings.fps);
-    CameraManager& cameraManager = CameraManager::Get();
-    ResourceManager& resourceManager = ResourceManager::Get();
-    ShaderManager& shaderManager = ShaderManager::Get();
-    DebugSettings& debugSettings = DebugSettings::Get();
-    shaderManager.lights.push_back(Light(LIGHT_DIRECTIONAL, Vector3(0, 0, 0), Vector3(15, -2, 15), WHITE, 1));
+    InitializeSingletons();
+    StartScene();
     std::thread FixedThread(&TimeState::FixedUpdateThread, &timeState);
     while (!WindowShouldClose()) {
-        UpdateCamera(&cameraManager.camera, CAMERA_FREE);
+        UpdateCamera(&CameraManager::Get().camera, CAMERA_FREE);
         DrawGame();
         if (IsKeyDown(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_R))
             ReloadShaders();
@@ -33,4 +31,10 @@ int main()
         timeState.UpdateDeltaTime();
     }
     CloseWindow();
+}
+void InitializeSingletons() {
+    CameraManager& cameraManager = CameraManager::Get();
+    ResourceManager& resourceManager = ResourceManager::Get();
+    ShaderManager& shaderManager = ShaderManager::Get();
+    DebugSettings& debugSettings = DebugSettings::Get();
 }

@@ -15,6 +15,10 @@ void InitDraw() {
     InitWindow(ws.width,ws.height,ws.title.c_str());
     DisableCursor();
 }
+void StartScene() {
+    ShaderManager::Get().lights.push_back(Light(LIGHT_DIRECTIONAL, Vector3(0, 0, 0), Vector3(15, -2, 15), WHITE, 1));
+}
+
 void DrawGame() {
     CameraManager& cameraManager = CameraManager::Get();
     ResourceManager& rm = ResourceManager::Get();
