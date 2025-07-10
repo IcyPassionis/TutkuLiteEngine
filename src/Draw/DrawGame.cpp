@@ -15,14 +15,16 @@ void InitDraw() {
     InitWindow(ws.width,ws.height,ws.title.c_str());
     DisableCursor();
 }
-void DrawGame(CameraManager &cameraManager, ResourceManager &rm) {
+void DrawGame() {
+    CameraManager& cameraManager = CameraManager::Get();
+    ResourceManager& rm = ResourceManager::Get();
     BeginDrawing();
     ClearBackground(BLACK);
     BeginMode3D(cameraManager.camera);
     if (DebugSettings::Get().Show3DGrid)
         DrawGrid(100,10);
     BeginShader(cameraManager.camera);
-    DrawScene(rm);
+    DrawScene();
     if (IsKeyDown(KEY_LEFT)) {
         LightIntensity--;
         std::cout << "Light Intensity: " << LightIntensity << "\n";
@@ -35,7 +37,8 @@ void DrawGame(CameraManager &cameraManager, ResourceManager &rm) {
     EndMode3D();
     EndDrawing();
 }
-void DrawScene(ResourceManager &rm) {
+void DrawScene() {
+    ResourceManager& rm = ResourceManager::Get();
     rm.barrel.materials[0].shader = ShaderManager::Get().shader;
     rm.barrel.materials[1].shader = ShaderManager::Get().shader;
     rm.barrel.materials[2].shader = ShaderManager::Get().shader;

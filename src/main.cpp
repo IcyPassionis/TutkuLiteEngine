@@ -26,7 +26,7 @@ int main()
     std::thread FixedThread(&TimeState::FixedUpdateThread, &timeState);
     while (!WindowShouldClose()) {
         UpdateCamera(&cameraManager.camera, CAMERA_FREE);
-        DrawGame(cameraManager,resourceManager);
+        DrawGame();
         if (IsKeyDown(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_R))
             ReloadShaders();
         UpdateDebug();

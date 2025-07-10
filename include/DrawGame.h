@@ -2,10 +2,7 @@
 
 #ifndef DRAWGAME_H
 #define DRAWGAME_H
-#include <CameraHeader.h>
-#include <ResourceManager.h>
-#include <ShaderManager.h>
-void DrawGame(CameraManager &cameraManager, ResourceManager &rm);
+void DrawGame();
 void InitDraw();
-void DrawScene(ResourceManager &rm);
+void DrawScene();
 #endif //DRAWGAME_H
