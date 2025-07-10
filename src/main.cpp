@@ -33,8 +33,8 @@ int main()
     CloseWindow();
 }
 void InitializeSingletons() {
-    CameraManager& cameraManager = CameraManager::Get();
-    ResourceManager& resourceManager = ResourceManager::Get();
-    ShaderManager& shaderManager = ShaderManager::Get();
-    DebugSettings& debugSettings = DebugSettings::Get();
+    CameraManager::Get();
+    ResourceManager::Get();
+    ShaderManager::Get();
+    DebugSettings::Get();
 }
