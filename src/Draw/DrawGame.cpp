@@ -21,7 +21,6 @@ void StartScene() {
 
 void DrawGame() {
     CameraManager& cameraManager = CameraManager::Get();
-    ResourceManager& rm = ResourceManager::Get();
     BeginDrawing();
     ClearBackground(BLACK);
     BeginMode3D(cameraManager.camera);
