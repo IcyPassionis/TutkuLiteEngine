@@ -43,11 +43,10 @@ void DrawGame() {
 }
 void DrawScene() {
     ResourceManager& rm = ResourceManager::Get();
-    rm.barrel.materials[0].shader = ShaderManager::Get().shader;
-    rm.barrel.materials[1].shader = ShaderManager::Get().shader;
-    rm.barrel.materials[2].shader = ShaderManager::Get().shader;
-    rm.barrel.materials[3].shader = ShaderManager::Get().shader;
-    //DrawModel(rm.barrel, Vector3(0,5,0), 20, WHITE);
+    for (int i =0; i < rm.barrel.materialCount;i++) {
+        rm.barrel.materials[i].shader = ShaderManager::Get().shader;
+    }
+        //DrawModel(rm.barrel, Vector3(0,5,0), 20, WHITE);
     Vector3 cubePosition = Vector3(0, 0, 0);
     DrawCube(Vector3(0, 5, 0),10,10,10,RED);
     DrawPlane(cubePosition,Vector2(100,100),BLUE);
