@@ -13,15 +13,12 @@
 
 inline Settings settings;
 static TimeState timeState;
+std::thread FixedThread;
+void InitGame();
 void InitializeSingletons();
 int main()
 {
-    InitDraw();
-    if (settings.isFpsLocked)
-        SetTargetFPS(settings.fps);
-    InitializeSingletons();
-    StartScene();
-    std::thread FixedThread(&TimeState::FixedUpdateThread, &timeState);
+    InitGame();
     while (!WindowShouldClose()) {
         UpdateCamera(&CameraManager::Get().camera, CAMERA_FREE);
         DrawGame();
@@ -31,6 +28,15 @@ int main()
         timeState.UpdateDeltaTime();
     }
     CloseWindow();
+}
+void InitGame()
+{
+    InitDraw();
+    if (settings.isFpsLocked)
+        SetTargetFPS(settings.fps);
+    InitializeSingletons();
+    StartScene();
+    FixedThread = std::thread(&TimeState::FixedUpdateThread, &timeState);
 }
 void InitializeSingletons() {
     CameraManager::Get();

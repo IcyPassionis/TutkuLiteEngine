@@ -16,7 +16,7 @@ void InitDraw() {
     DisableCursor();
 }
 void StartScene() {
-    ShaderManager::Get().lights.push_back(Light(LIGHT_DIRECTIONAL, Vector3(0, 0, 0), Vector3(15, -2, 15), WHITE, 1));
+    ShaderManager::Get().lights.emplace_back(LIGHT_DIRECTIONAL, Vector3(0, 0, 0), Vector3(15, -2, 15), WHITE, 1);
 }
 
 void DrawGame() {
