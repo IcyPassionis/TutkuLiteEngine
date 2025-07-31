@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 #include <ShaderManager.h>
 #include "LiteDebugger.h"
+
 #include "States.h"
 static WindowState ws = settings;
 float Shininess = 0;
@@ -42,10 +43,8 @@ void DrawGame() {
 }
 void DrawScene() {
     ResourceManager& rm = ResourceManager::Get();
-    for (int i =0; i < rm.barrel.materialCount;i++) {
-        rm.barrel.materials[i].shader = ShaderManager::Get().shader;
-    }
         //DrawModel(rm.barrel, Vector3(0,5,0), 20, WHITE);
+    rm.LoadShadersToModels();
     Vector3 cubePosition = Vector3(0, 0, 0);
     DrawCube(Vector3(0, 5, 0),10,10,10,RED);
     DrawPlane(cubePosition,Vector2(100,100),BLUE);

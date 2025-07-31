@@ -3,13 +3,11 @@
 #include <raylib.h>
 #include <unordered_map>
 #include <vector>
-
 #include "Lighting.h"
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
 struct ResourceManager {
     std::unordered_map<std::string, Model> Models;
-    std::vector<Light> lights;
     Model barrel;
     ResourceManager (const ResourceManager&) = delete;
     ResourceManager& operator=(const ResourceManager&) = delete;
@@ -18,15 +16,14 @@ struct ResourceManager {
         return instance;
     }
     ResourceManager() {
-        // This Constructor only loads things we know will always be loaded in game
         barrel = LoadModel(RESOURCES_PATH "models/barrel.gltf");
     }
-    ~ResourceManager() {
-        // Deconstructor SHOULD unload everything
-        UnloadModel(barrel);
-        for (auto model : Models) {
-            UnloadModel(model.second);
-        }
+    ~ResourceManager() {  // Deconstructor SHOULD unload everything
+        UnloadModels();
     }
+    void LoadShadersToModels();
+
+private:
+    void UnloadModels();
 };
 #endif //RESOURCEMANAGER_H
