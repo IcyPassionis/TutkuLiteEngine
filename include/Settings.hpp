@@ -3,16 +3,23 @@
 #ifndef SETTINGS_HPP
 #define SETTINGS_HPP
 struct Settings {
-    unsigned short fileVersion;
-    unsigned short musicVolume;
-    unsigned short audioVolume;
-    unsigned int windowWidth;
-    unsigned int windowHeight;
+    short fileVersion;
+    short musicVolume;
+    short audioVolume;
+    int windowWidth;
+    int windowHeight;
     bool isFpsLocked;
-    unsigned int fps;
+    int fps;
     Settings() {
-        windowWidth = 0;
-        windowHeight = 0;
+        SetDefaultSettings();
+    }
+    void SetDefaultSettings()
+    {
+        fileVersion = 1;
+        musicVolume = 100;
+        audioVolume = 100;
+        windowWidth = 1920;
+        windowHeight = 1080;
         isFpsLocked = true;
         fps = 60;
     }

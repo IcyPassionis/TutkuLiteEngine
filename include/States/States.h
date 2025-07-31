@@ -23,8 +23,8 @@ struct GameState {
 };
 // This struct controls window
 struct WindowState {
-    unsigned int width; // Screens width
-    unsigned int height; // Screens height
+    int width; // Screens width
+    int height; // Screens height
     std::string title; // Windows title text
     WindowState(Settings &settings) {
         // Default Resolution, if a settings file doesn't yet create
