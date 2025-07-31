@@ -39,7 +39,7 @@ void ResourceManager::LoadAllModels()
                     || entry.path().extension() == ".gltf")
                 {
                     Model model = LoadModel(entry.path().string().c_str());
-                    std::string name = entry.path().filename();
+                    std::string name = entry.path().filename().replace_extension();
                     std::cout << "Loaded model file name: " << name << std::endl;
                     Models.insert({name, model});
                 }
