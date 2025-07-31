@@ -2,7 +2,6 @@
 #include <iostream>
 #include <raylib.h>
 #include <unordered_map>
-#include <vector>
 #include "Lighting.h"
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
@@ -16,7 +15,7 @@ struct ResourceManager {
         return instance;
     }
     ResourceManager() {
-        barrel = LoadModel(RESOURCES_PATH "models/barrel.gltf");
+        LoadAllModels();
     }
     ~ResourceManager() {  // Deconstructor SHOULD unload everything
         UnloadModels();
@@ -24,6 +23,7 @@ struct ResourceManager {
     void LoadShadersToModels();
 
 private:
+    void LoadAllModels();
     void UnloadModels();
 };
 #endif //RESOURCEMANAGER_H
