@@ -15,6 +15,7 @@ void UpdateDebug() {
 void CheckDebugKeys(DebugSettings& debugSettings) {
     if (IsKeyPressed(KEY_F3)) {
         debugSettings.inDebugMode = !debugSettings.inDebugMode;
+        debugSettings.Show3DGrid = !debugSettings.Show3DGrid;
     }
     if (debugSettings.inDebugMode) {
         if (IsKeyPressed(KEY_H)) {
