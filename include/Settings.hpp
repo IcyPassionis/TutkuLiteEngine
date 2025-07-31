@@ -10,6 +10,13 @@ struct Settings {
     int windowHeight;
     bool isFpsLocked;
     int fps;
+    Settings(const Settings&) = delete;
+    Settings& operator=(const Settings&) = delete;
+    static Settings& Get()
+    {
+        static Settings instance;
+        return instance;
+    }
     Settings() {
         SetDefaultSettings();
     }

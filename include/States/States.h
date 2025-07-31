@@ -3,7 +3,6 @@
 #ifndef STATES_H
 #define STATES_H
 #include <string>
-#include <Settings.hpp>
 // ScreenState enum this contains every screen player can enter
 enum ScreenState {
     MAIN_MENU, // Main menu, default screen
@@ -22,21 +21,12 @@ struct GameState {
     }
 };
 // This struct controls window
-struct WindowState {
+struct States {
     int width; // Screens width
     int height; // Screens height
     std::string title; // Windows title text
-    WindowState(Settings &settings) {
-        // Default Resolution, if a settings file doesn't yet create
-        if (settings.windowHeight == 0 || settings.windowWidth == 0) {
-            width = GetScreenWidth();
-            height = GetScreenHeight();
-        }
-        else {
-            width = settings.windowWidth;
-            height = settings.windowHeight;
-        }
-        title = "Island Project"; // Default Name for my game
-    }
+    States();
+private:
+    void Load(); // Loads window State, by getting default values or from settings file
 };
 #endif //STATES_H

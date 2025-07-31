@@ -7,7 +7,7 @@
 #include "LiteDebugger.h"
 
 #include "States.h"
-static WindowState ws = settings;
+static States ws;
 float Shininess = 0;
 float LightIntensity = 5;
 void InitDraw() {

@@ -23,7 +23,7 @@ int main()
         UpdateCamera(&CameraManager::Get().camera, CAMERA_FREE);
         DrawGame();
         if (IsKeyDown(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_R))
-            ReloadShaders();
+            ReloadShaders();m
         UpdateDebug();
         timeState.UpdateDeltaTime();
     }
@@ -31,6 +31,7 @@ int main()
 }
 void InitGame()
 {
+    Settings::Get();
     InitDraw();
     if (settings.isFpsLocked)
         SetTargetFPS(settings.fps);
