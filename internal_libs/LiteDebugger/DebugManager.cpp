@@ -1,5 +1,6 @@
-#include "LiteDebugger.h"
+#define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
+#include "LiteDebugger.h"
 #include <raylib.h>
 #include <string>
 

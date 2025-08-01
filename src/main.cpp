@@ -1,5 +1,4 @@
-#define RAYGUI_IMPLEMENTATION
-#include "raygui.h"
+
 #include <raylib.h>
 #include <CameraHeader.h>
 #include <thread>
