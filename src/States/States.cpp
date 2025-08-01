@@ -2,12 +2,12 @@
 #include "raylib.h"
 #include "Settings.hpp"
 
-States::States()
+WindowStates::WindowStates()
 {
     Load();
 }
 
-void States::Load()
+void WindowStates::Load()
 {
     if (Settings::Get().windowHeight == 0 || Settings::Get().windowWidth == 0) {
         width = GetScreenWidth();

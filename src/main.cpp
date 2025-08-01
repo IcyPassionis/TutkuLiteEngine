@@ -23,7 +23,7 @@ int main()
         UpdateCamera(&CameraManager::Get().camera, CAMERA_FREE);
         DrawGame();
         if (IsKeyDown(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_R))
-            ReloadShaders();m
+            ReloadShaders();
         UpdateDebug();
         timeState.UpdateDeltaTime();
     }

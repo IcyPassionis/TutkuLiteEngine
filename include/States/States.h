@@ -21,12 +21,12 @@ struct GameState {
     }
 };
 // This struct controls window
-struct States {
+struct WindowStates {
     int width; // Screens width
     int height; // Screens height
     std::string title; // Windows title text
-    States();
+    WindowStates();
 private:
     void Load(); // Loads window State, by getting default values or from settings file
 };
-#endif //STATES_H
+#endif
