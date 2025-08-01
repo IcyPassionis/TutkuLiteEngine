@@ -14,11 +14,7 @@ struct GameState {
     ScreenState screenState; // This saves currently which state is player
     bool isScreenOnTransition; // If screen is on transition an animation will play
     bool isFinished; // Is the game finished
-    GameState() {
-        screenState = MAIN_MENU;
-        isScreenOnTransition = false;
-        isFinished = false;
-    }
+    GameState();
 };
 // This struct controls window
 struct WindowStates {

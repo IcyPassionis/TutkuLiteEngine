@@ -4,7 +4,7 @@
 #define TIMESTATE_H
 #include <atomic>
 #include <iostream>
-
+#include <thread>
 struct TimeState {
 
     float deltaTime;
@@ -14,6 +14,7 @@ struct TimeState {
         accumulator = 0.0f;
         std::cout << "Current Fixed Time Step:" << fixedTimeStep << "\n";
     }
+    std::thread FixedThread;
     bool FixedUpdate();
     void FixedUpdateThread();
     void UpdateDeltaTime();

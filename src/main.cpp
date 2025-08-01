@@ -13,7 +13,7 @@
 
 inline Settings settings;
 static TimeState timeState;
-std::thread FixedThread;
+
 void InitGame();
 void InitializeSingletons();
 int main()
@@ -37,7 +37,7 @@ void InitGame()
         SetTargetFPS(settings.fps);
     InitializeSingletons();
     StartScene();
-    FixedThread = std::thread(&TimeState::FixedUpdateThread, &timeState);
+    timeState.FixedThread = std::thread(&TimeState::FixedUpdateThread, &timeState);
 }
 void InitializeSingletons() {
     CameraManager::Get();
