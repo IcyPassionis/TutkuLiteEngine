@@ -10,7 +10,6 @@
 #include "TimeState.h"
 #include <LiteDebugger.h>
 
-inline Settings settings;
 static TimeState timeState;
 
 void InitGame();
@@ -32,8 +31,8 @@ void InitGame()
 {
     Settings::Get();
     InitDraw();
-    if (settings.isFpsLocked)
-        SetTargetFPS(settings.fps);
+    if (Settings::Get().isFpsLocked)
+        SetTargetFPS(Settings::Get().fps);
     InitializeSingletons();
     StartScene();
     timeState.FixedThread = std::thread(&TimeState::FixedUpdateThread, &timeState);
