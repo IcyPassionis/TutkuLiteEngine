@@ -5,6 +5,7 @@
 #include "ResourceManager.h"
 #include <ShaderManager.h>
 #include "LiteDebugger.h"
+#include "Settings.hpp"
 
 #include "States.h"
 static WindowStates ws;
@@ -13,6 +14,8 @@ float LightIntensity = 5;
 void InitDraw() {
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
+    if (Settings::Get().isVsyncEnabled)
+        SetConfigFlags(FLAG_VSYNC_HINT);
     InitWindow(ws.width,ws.height,ws.title.c_str());
     SetWindowMonitor(ws.currentMonitor);
     DisableCursor();
