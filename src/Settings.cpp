@@ -7,3 +7,14 @@ Settings::Settings()
         SetDefaultSettings();
 }
 
+void Settings::SetDefaultSettings()
+{
+    fileVersion = 1;
+    currentMonitor = 0;
+    musicVolume = 100;
+    audioVolume = 100;
+    windowWidth = 1920;
+    windowHeight = 1080;
+    isFpsLocked = true;
+    fps = 60;
+}

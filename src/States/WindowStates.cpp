@@ -10,12 +10,14 @@ WindowStates::WindowStates()
 void WindowStates::Load()
 {
     if (Settings::Get().windowHeight == 0 || Settings::Get().windowWidth == 0) {
-        width = GetScreenWidth();
-        height = GetScreenHeight();
+        currentMonitor = 0;
+        width = GetMonitorWidth(currentMonitor);
+        height = GetMonitorHeight(currentMonitor);
     }
     else {
         width = Settings::Get().windowWidth;
         height = Settings::Get().windowHeight;
+        currentMonitor = Settings::Get().currentMonitor;
     }
     title = "Island Project"; // Title name
 }

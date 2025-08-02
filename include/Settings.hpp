@@ -6,6 +6,7 @@ struct Settings {
     short fileVersion;
     short musicVolume;
     short audioVolume;
+    int currentMonitor;
     int windowWidth;
     int windowHeight;
     bool isFpsLocked;
@@ -17,17 +18,9 @@ struct Settings {
         static Settings instance;
         return instance;
     }
-    void SetDefaultSettings()
-    {
-        fileVersion = 1;
-        musicVolume = 100;
-        audioVolume = 100;
-        windowWidth = 1920;
-        windowHeight = 1080;
-        isFpsLocked = true;
-        fps = 60;
-    }
     Settings();
+private:
+    void SetDefaultSettings(); // Sets settings default values, if there is not any settings file available.
 };
 extern Settings settings;
 

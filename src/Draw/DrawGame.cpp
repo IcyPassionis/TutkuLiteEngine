@@ -14,6 +14,7 @@ void InitDraw() {
     SetConfigFlags(FLAG_MSAA_4X_HINT);
     SetConfigFlags(FLAG_WINDOW_RESIZABLE);
     InitWindow(ws.width,ws.height,ws.title.c_str());
+    SetWindowMonitor(ws.currentMonitor);
     DisableCursor();
 }
 void StartScene() {

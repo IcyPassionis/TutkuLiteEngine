@@ -20,6 +20,7 @@ struct GameState {
 struct WindowStates {
     int width; // Screens width
     int height; // Screens height
+    int currentMonitor; // Current supposed monitor.
     std::string title; // Windows title text
     WindowStates();
 private:
