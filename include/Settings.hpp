@@ -17,9 +17,6 @@ struct Settings {
         static Settings instance;
         return instance;
     }
-    Settings() {
-        SetDefaultSettings();
-    }
     void SetDefaultSettings()
     {
         fileVersion = 1;
@@ -30,6 +27,7 @@ struct Settings {
         isFpsLocked = true;
         fps = 60;
     }
+    Settings();
 };
 extern Settings settings;
 

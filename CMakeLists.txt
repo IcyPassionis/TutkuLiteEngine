@@ -13,6 +13,9 @@ add_executable(Engine "${MY_SOURCE}")
 
 #Resources path for development purposes
 target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RESOURCES_PATH="${CMAKE_CURRENT_SOURCE_DIR}/resources/")
+#Game file
+target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC GAME_PATH="${CMAKE_CURRENT_SOURCE_DIR}")
+
 #Resources path for build purposes, uncomment it and comment development path for building the game !
 #target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC RESOURCES_PATH="./resources/")
 
