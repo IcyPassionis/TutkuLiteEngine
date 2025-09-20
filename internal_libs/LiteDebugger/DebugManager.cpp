@@ -7,10 +7,9 @@
 #include "../../include/CameraHeader.h"
 
 void UpdateDebug() {
-    DebugSettings& debugSettings = DebugSettings::Get();
-    CheckDebugKeys(debugSettings);  
-    if (debugSettings.inDebugMode) {
-        UpdateDebugGUI(debugSettings);
+    if (DebugSettings::Get().inDebugMode) {
+        CheckDebugKeys(DebugSettings::Get());
+        UpdateDebugGUI(DebugSettings::Get());
     }
 }
 void CheckDebugKeys(DebugSettings& debugSettings) {
