@@ -7,7 +7,7 @@ using string = std::string;
 Settings::Settings()
 {
     string settings_file = GAME_PATH "settings.json";
-    std::cout << "INFO: Settings file path: " << settings_file << "\n";
+    std::cout << "MAIN THREAD: " << "INFO: Settings file path: " << settings_file << "\n";
     if (!std::filesystem::exists(settings_file))
         SetDefaultSettings();
     else
@@ -16,7 +16,7 @@ Settings::Settings()
 
 void Settings::SetDefaultSettings()
 {
-    std::cout << "WARNING: " << "Settings cant be loaded or doesn't exists yet. Default values will be used... \n";
+    std::cout << "MAIN THREAD: " << "WARNING: " << "Settings cant be loaded or doesn't exists yet. Default values will be used... \n";
     fileVersion = 1;
     currentMonitor = 0;
     musicVolume = 100;
@@ -30,7 +30,7 @@ void Settings::SetDefaultSettings()
 
 void Settings::LoadSettings()
 {
-    std::cout << "INFO: " << "Settings currently loading... \n";
+    std::cout << "MAIN THREAD: " << "INFO: " << "Settings currently loading... \n";
     std::ifstream file(GAME_PATH "settings.json");
     try
     {

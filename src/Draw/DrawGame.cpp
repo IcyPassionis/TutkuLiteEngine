@@ -35,11 +35,11 @@ void DrawGame() {
     DrawScene();
     if (IsKeyDown(KEY_LEFT)) {
         LightIntensity--;
-        std::cout << "Light Intensity: " << LightIntensity << "\n";
+        std::cout << "MAIN THREAD: " << "Light Intensity: " << LightIntensity << "\n";
     }
     else if (IsKeyDown(KEY_RIGHT)) {
         LightIntensity++;
-        std::cout << "Light Intensity: " << LightIntensity << "\n";
+        std::cout << "MAIN THREAD: " << "Light Intensity: " << LightIntensity << "\n";
     }
     EndShader();
     EndMode3D();
@@ -47,7 +47,7 @@ void DrawGame() {
 }
 void DrawScene() {
     ResourceManager& rm = ResourceManager::Get();
-        //DrawModel(rm.barrel, Vector3(0,5,0), 20, WHITE);
+    //DrawModel(rm.barrel, Vector3(0,5,0), 20, WHITE);
     rm.LoadShadersToModels();
     Vector3 cubePosition = Vector3(0, 0, 0);
     DrawCube(Vector3(0, 5, 0),10,10,10,RED);

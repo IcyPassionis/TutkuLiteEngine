@@ -5,8 +5,9 @@
 
 struct DebugSettings { // Debug setting struct
     bool inDebugMode; // Checks if in debug mode or not
-    bool ShowFps; // Shows FPS or not
-    bool ShowProfiler; // Shows profiler or not(includes ms latency)
+    bool ShowFps; // Shows FPS or no
+    bool ShowLatency; // Show ms latency
+    bool ShowProfiler; // Shows full profiler.
     bool Show3DGrid; // Shows 3D Grid
     bool Show3DColliders; // Shows collider box in 3D Space
     bool Show3DPosition; // Shows 3D Position of camera
@@ -21,7 +22,8 @@ private:
     DebugSettings() {
         inDebugMode = true;
         ShowFps = true;
-        ShowProfiler = true;
+        ShowLatency = false;
+        ShowProfiler = false;
         Show3DGrid = true;
         Show3DColliders = false;
         Show3DPosition = true;

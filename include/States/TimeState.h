@@ -12,7 +12,7 @@ struct TimeState {
         isDeltaTime = false;
         fixedTimeStep = 0.016f;
         accumulator = 0.0f;
-        std::cout << "Current Fixed Time Step:" << fixedTimeStep << "\n";
+        std::cout << "MAIN THREAD: " << "Current Fixed Time Step:" << fixedTimeStep << "\n";
     }
     std::thread FixedThread;
     bool FixedUpdate();

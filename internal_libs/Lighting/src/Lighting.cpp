@@ -13,13 +13,13 @@ void Light::FindShaderLocations() {
     typeLoc = GetShaderLocation(shader, TextFormat("lights[%i].type", currentLightCount)); // Gets light type location in the shader program
     currentLightCount++; // Increases current light count by 1
     int currentLightCountLoc = GetShaderLocation(shader, "currentLights"); // Gets current light count location in the shader program
-    std::cout << "INFO: Light Position location in shader program: " << positionLoc << "\n";
-    std::cout << "INFO: Light Direction location in shader program: " << directionLoc << "\n";
-    std::cout << "INFO: Light Color location in shader program: " << colorLoc << "\n";
-    std::cout << "INFO: Light Intensity location in shader program: " << intensityLoc << "\n";
-    std::cout << "INFO: Light Type location in shader program: " << typeLoc << "\n";
-    std::cout << "INFO: Light Enabled location in shader program: " << enabledLoc << "\n";
-    std::cout << "INFO: Current Light Count location in shader program: " << currentLightCountLoc << "\n";
+    std::cout << "MAIN THREAD: " << "INFO: Light Position location in shader program: " << positionLoc << "\n";
+    std::cout << "MAIN THREAD: " << "INFO: Light Direction location in shader program: " << directionLoc << "\n";
+    std::cout << "MAIN THREAD: " << "INFO: Light Color location in shader program: " << colorLoc << "\n";
+    std::cout << "MAIN THREAD: " << "INFO: Light Intensity location in shader program: " << intensityLoc << "\n";
+    std::cout << "MAIN THREAD: " << "INFO: Light Type location in shader program: " << typeLoc << "\n";
+    std::cout << "MAIN THREAD: " << "INFO: Light Enabled location in shader program: " << enabledLoc << "\n";
+    std::cout << "MAIN THREAD: " << "INFO: Current Light Count location in shader program: " << currentLightCountLoc << "\n";
     UpdateLightValues(); // First time update
 }
 
@@ -33,7 +33,7 @@ void Light::UpdateLightValues() {
     Vector3 normalizedColor = {color.r / 255.0f, color.g / 255.0f, color.b / 255.0f}; // Normalizes color for shader
     SetShaderValue(shader, colorLoc, &normalizedColor, SHADER_UNIFORM_VEC3); // Sets Shader program's light color
     SetShaderValue(shader, typeLoc, &type, SHADER_UNIFORM_INT); // Sets Shader program's light type ( Directional, Point, Spot
-    std::cout << "INFO: Light Values Updated\n";
+    std::cout << "MAIN THREAD: " << "INFO: Light Values Updated\n";
 }
 
 void Light::ReloadLight() {

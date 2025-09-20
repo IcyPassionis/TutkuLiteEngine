@@ -17,7 +17,7 @@ struct CameraManager {
         camera.up = Vector3(0, 1, 0);
         camera.fovy = 90;
         camera.projection = CAMERA_PERSPECTIVE;
-        std::cout << "Camera has been Initialized\n";
+        std::cout << "MAIN THREAD: " << "Camera has been Initialized\n";
     }
 };
 #endif
