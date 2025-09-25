@@ -14,6 +14,8 @@ class Scene // Scene object, serializable
     Scene(std::string name) {
         this->name = name;
     }
+    void Load(); // Load current scene with models,textures,icons.
+    void DrawScene(); // Draw current scene to game
 private:
     std::vector<std::string> loadedModels; // Loaded models name in this scene
     std::vector<std::string> loaded2DTextures; // Loaded textures in this scene

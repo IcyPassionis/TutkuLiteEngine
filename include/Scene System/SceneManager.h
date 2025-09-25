@@ -15,11 +15,11 @@ public:
         static SceneManager instance;
         return instance;
     }
-    void LoadSceneByName(const std::string& name);
-    void LoadSceneByPath(const std::string& path);
-    void LoadScene(int id);
+    void LoadSceneByName(const std::string& name); // Load scenes by name of scene
+    void LoadSceneByPath(const std::string& path); // Load scenes by file path
+    void LoadScene(int id); // Load scenes by id of scene
     private:
-    std::vector<Scene> loadedScenes;
+    std::vector<Scene> loadedScenes; // List of scenes currently loaded
 };
 
 #endif
