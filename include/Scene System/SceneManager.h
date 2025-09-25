@@ -15,6 +15,7 @@ public:
         static SceneManager instance;
         return instance;
     }
+    SceneManager();
     void LoadSceneByName(const std::string& name); // Load scenes by name of scene
     void LoadSceneByPath(const std::string& path); // Load scenes by file path
     void LoadScene(int id); // Load scenes by id of scene
