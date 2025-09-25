@@ -24,6 +24,7 @@ target_compile_definitions("${CMAKE_PROJECT_NAME}" PUBLIC GAME_PATH="${CMAKE_CUR
 target_include_directories(Engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_include_directories(Engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/States")
 target_include_directories(Engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/Managers")
+target_include_directories(Engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/Scene System")
 
 #Linking libraries
 add_library(raygui INTERFACE)
