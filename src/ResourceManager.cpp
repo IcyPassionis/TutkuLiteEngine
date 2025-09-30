@@ -3,6 +3,19 @@
 #include <filesystem>
 #include <algorithm>
 #include "SceneManager.h"
+ResourceManager::ResourceManager()
+{
+    if (std::filesystem::exists(RESOURCES_PATH))
+    {
+        LoadAllModels();
+        LoadPathsInAssets();
+    }
+    else
+    {
+        std::cout << "RESOURCE THREAD, WARNING: " << "No resources path founded please create 'resources' folder.";
+    }
+}
+
 void ResourceManager::LoadShadersToModels()
 {
     for (auto& model : loadedModels)
@@ -52,4 +65,14 @@ void ResourceManager::LoadAllModels()
         std::cout << "Models file, doesnt exists. Returns" << std::endl;
         barrel = LoadModel(RESOURCES_PATH "models/barrel.gltf");
     }
+}
+void ResourceManager::LoadModelsInScene(int id)
+{
+    Scene scene = SceneManager::Get().ReturnScene(id);
+}
+void ResourceManager::LoadPathsInAssets()
+{
+    std::string assetsPath = RESOURCES_PATH "Assets/";
+    std::string modelsPath = RESOURCES_PATH "Models/";
+
 }
