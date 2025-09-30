@@ -7,7 +7,6 @@
 
 struct SceneManager // Singleton, scene manager
 {
-public:
     SceneManager(const SceneManager&) = delete;
     SceneManager& operator=(const SceneManager&) = delete;
     static SceneManager& Get()
@@ -19,7 +18,9 @@ public:
     void LoadSceneByName(const std::string& name); // Load scenes by name of scene
     void LoadSceneByPath(const std::string& path); // Load scenes by file path
     void LoadScene(int id); // Load scenes by id of scene
+    Scene ReturnScene(int id); // Return scene object
     private:
+    void CheckScenesInBinary(); // Checks scenes stored in binary files
     std::vector<Scene> loadedScenes; // List of scenes currently loaded
 };
 

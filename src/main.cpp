@@ -10,6 +10,8 @@
 #include "TimeState.h"
 #include <LiteDebugger.h>
 
+#include "SceneManager.h"
+
 static TimeState timeState;
 
 void InitGame();
@@ -39,6 +41,7 @@ void InitGame()
 }
 void InitializeSingletons() {
     CameraManager::Get();
+    SceneManager::Get();
     ResourceManager::Get();
     ShaderManager::Get();
     DebugSettings::Get();
