@@ -6,7 +6,7 @@
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
 struct ResourceManager {
-    std::unordered_map<std::string, Model> Models;
+    std::unordered_map<std::string, Model> loadedModels;
     Model barrel;
     ResourceManager (const ResourceManager&) = delete;
     ResourceManager& operator=(const ResourceManager&) = delete;
@@ -21,8 +21,9 @@ struct ResourceManager {
         UnloadModels();
     }
     void LoadShadersToModels();
-
+    void LoadModelsInScene(int id);
 private:
+    void LoadPathsInAssets();
     void LoadAllModels();
     void UnloadModels();
 };

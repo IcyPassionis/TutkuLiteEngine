@@ -2,9 +2,10 @@
 #include "ShaderManager.h"
 #include <filesystem>
 #include <algorithm>
+#include "SceneManager.h"
 void ResourceManager::LoadShadersToModels()
 {
-    for (auto& model : Models)
+    for (auto& model : loadedModels)
     {
         for (int i = 0; i < model.second.materialCount; i++)
         {
@@ -17,7 +18,7 @@ void ResourceManager::LoadShadersToModels()
 }
 void ResourceManager::UnloadModels()
 {
-    for (auto& model : Models) {
+    for (auto& model : loadedModels) {
         UnloadModel(model.second);
     }
     UnloadModel(barrel);
@@ -41,7 +42,7 @@ void ResourceManager::LoadAllModels()
                     Model model = LoadModel(entry.path().string().c_str());
                     std::string name = entry.path().filename().replace_extension();
                     std::cout << "Loaded model file name: " << name << std::endl;
-                    Models.insert({name, model});
+                    loadedModels.insert({name, model});
                 }
             }
         }
