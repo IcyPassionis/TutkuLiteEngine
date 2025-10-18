@@ -18,7 +18,7 @@ ResourceManager::ResourceManager()
 
 void ResourceManager::LoadShadersToModels()
 {
-    for (auto& model : loadedModels)
+    for (auto& model : currentLoadedModels)
     {
         for (int i = 0; i < model.second.materialCount; i++)
         {
@@ -31,7 +31,7 @@ void ResourceManager::LoadShadersToModels()
 }
 void ResourceManager::UnloadModels()
 {
-    for (auto& model : loadedModels) {
+    for (auto& model : currentLoadedModels) {
         UnloadModel(model.second);
     }
     UnloadModel(barrel);
@@ -55,7 +55,7 @@ void ResourceManager::LoadAllModels()
                     Model model = LoadModel(entry.path().string().c_str());
                     std::string name = entry.path().filename().replace_extension();
                     std::cout << "Loaded model file name: " << name << std::endl;
-                    loadedModels.insert({name, model});
+                    currentLoadedModels.insert({name, model});
                 }
             }
         }
