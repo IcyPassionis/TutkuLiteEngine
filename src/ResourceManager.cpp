@@ -29,7 +29,7 @@ void ResourceManager::LoadShadersToModels()
         barrel.materials[i].shader = ShaderManager::Get().shader;
     }
 }
-void ResourceManager::UnloadModels()
+void ResourceManager::UnloadAllModels()
 {
     for (auto& model : currentLoadedModels) {
         UnloadModel(model.second);

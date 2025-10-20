@@ -28,6 +28,6 @@ struct ResourceManager {
 private:
     void LoadPathsInAssets();
     void LoadAllModels();
-    void UnloadModels();
+    void UnloadAllModels();
 };
 #endif //RESOURCEMANAGER_H
