@@ -6,11 +6,12 @@
 #ifndef RESOURCEMANAGER_H
 #define RESOURCEMANAGER_H
 struct ResourceManager {
-    std::unordered_map<std::string, Model> currentLoadedModels; // Current loaded models
-    std::unordered_map<std::string, Material> currentLoadedMaterials; // Current loaded materials
-    std::unordered_map<std::string, Texture2D> currentLoaded2DTextures; // Current loaded textures
-    std::unordered_map<std::string, Image> currentLoadedIcons; // Current loaded icons
-    std::unordered_map<std::string, std::string> currentLoadedModelsPath;
+    std::unordered_map<std::string, Model> currentLoadedModels;
+    std::unordered_map<std::string, Material> currentLoadedMaterials;
+    std::unordered_map<std::string, Texture2D> currentLoaded2DTextures;
+    std::unordered_map<std::string, Image> currentLoadedIcons;
+    std::unordered_map<std::string, std::string> loadedModelsPath;
+    bool inBuildMode = false;
     Model barrel;
     ResourceManager (const ResourceManager&) = delete;
     ResourceManager& operator=(const ResourceManager&) = delete;
