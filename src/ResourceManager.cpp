@@ -66,9 +66,30 @@ void ResourceManager::LoadAllModels()
         barrel = LoadModel(RESOURCES_PATH "models/barrel.gltf");
     }
 }
-void ResourceManager::LoadModelsInScene(int id)
+void ResourceManager::LoadAllModelsInScene(const int sceneId)
 {
-    Scene scene = SceneManager::Get().ReturnScene(id);
+    const std::string modelsPath = RESOURCES_PATH "Models/";
+    const std::string assetsPath = RESOURCES_PATH "Assets/";
+    Scene scene = SceneManager::Get().ReturnScene(sceneId);
+    const auto modelNames= scene.GetModels();
+    for (const auto& entry : std::filesystem::directory_iterator(modelsPath))
+    {
+        if (entry.is_regular_file())
+        {
+            if (entry.path().extension() == ".obj"
+                   || entry.path().extension() == ".fbx"
+                   || entry.path().extension() == ".gltf")
+            {
+                std::string name = entry.path().filename().replace_extension();
+                if (std::ranges::find(modelNames, name) == modelNames.end()){
+                    continue;
+                }
+                Model model = LoadModel(entry.path().string().c_str());
+                std::cout << "Loaded model file name: " << name << std::endl;
+                currentLoadedModels.insert({name, model});
+            }
+        }
+    }
 }
 void ResourceManager::LoadPathsInAssets()
 {

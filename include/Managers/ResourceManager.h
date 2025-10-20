@@ -21,10 +21,10 @@ struct ResourceManager {
     }
     ResourceManager();
     ~ResourceManager() {  // Deconstructor SHOULD unload everything
-        UnloadModels();
+        UnloadAllModels();
     }
     void LoadShadersToModels();
-    void LoadModelsInScene(int id);
+    void LoadAllModelsInScene(const int sceneId);
 private:
     void LoadPathsInAssets();
     void LoadAllModels();

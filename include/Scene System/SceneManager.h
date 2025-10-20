@@ -20,6 +20,7 @@ struct SceneManager // Singleton, scene manager
     void LoadScene(int id); // Load scenes by id of scene
     Scene ReturnScene(int id); // Return scene object
     private:
+    int currentSceneID;
     void CheckScenesInBinary(); // Checks scenes stored in binary files
     std::vector<Scene> loadedScenes; // List of scenes currently loaded
 };
