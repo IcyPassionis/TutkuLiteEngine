@@ -11,7 +11,7 @@
 class Scene // Scene object, serializable
 {
     public:
-    std::string name; // Scene's name in scenes list, should be unique
+    std::string name = "default"; // Scene's name in scenes list, should be unique
 
     Scene(const std::string& name); // Constructor
     ~Scene(); // Deconstructor

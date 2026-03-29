@@ -17,12 +17,13 @@ struct SceneManager // Singleton, scene manager
     SceneManager();
     void LoadSceneByName(const std::string& name); // Load scenes by name of scene
     void LoadSceneByPath(const std::string& path); // Load scenes by file path
-    void LoadScene(int id); // Load scenes by id of scene
+    Scene LoadScene(int id); // Load scenes by id of scene
+    int GetSceneIDByName(const std::string& name); // Gets scene id, by its name
+    int currentSceneID = 0;
     Scene ReturnScene(int id); // Return scene object
     private:
-    int currentSceneID;
-    void CheckScenesInBinary(); // Checks scenes stored in binary files
     std::vector<Scene> loadedScenes; // List of scenes currently loaded
-};
+    void CheckScenesInBinary(); // Checks scenes stored in binary files
+   };
 
 #endif

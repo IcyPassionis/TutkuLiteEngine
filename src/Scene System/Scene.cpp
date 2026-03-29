@@ -27,6 +27,10 @@ void Scene::AddTextures(std::vector<std::string>& names){
 void Scene::AddIcons(std::vector<std::string>& names){
     loadedIcons.insert(loadedIcons.end(), names.begin(), names.end());
 }
+void Scene::DrawScene(){
+    std::cout << this->name << std::endl;
+}
+
 const std::vector<std::string>& Scene::GetModels(){
    return loadedModels;
 }
