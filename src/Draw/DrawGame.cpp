@@ -7,6 +7,7 @@
 #include "LiteDebugger.h"
 #include "Settings.hpp"
 
+#include "SceneManager.h"
 #include "States.h"
 static WindowStates ws;
 float Shininess = 0;
@@ -46,11 +47,21 @@ void DrawGame() {
     EndDrawing();
 }
 void DrawScene() {
-    ResourceManager& rm = ResourceManager::Get();
-    //DrawModel(rm.barrel, Vector3(0,5,0), 20, WHITE);
-    rm.LoadShadersToModels();
-    Vector3 cubePosition = Vector3(0, 0, 0);
-    DrawCube(Vector3(0, 5, 0),10,10,10,RED);
-    DrawPlane(cubePosition,Vector2(100,100),BLUE);
+  SceneManager &sm = SceneManager::Get();
+  Scene currentScene = sm.LoadScene(sm.currentSceneID);
+  if (currentScene.name == "empty") // REVERTS TO DEFAULT SCENE
+  {
+    DrawDefaultScene();
+  }
+  else // DRAWS CURRENT SCENE !
+  {
+    currentScene.DrawScene();
+  }
 }
-
+void DrawDefaultScene ()
+{
+  ResourceManager &rm = ResourceManager::Get();
+  rm.LoadShadersToModels();
+  DrawModel(rm.currentLoadedModels["barrel"], Vector3(0, 5, 0), 10, Color(255, 255, 255));
+  DrawSceneGeometry();
+}
