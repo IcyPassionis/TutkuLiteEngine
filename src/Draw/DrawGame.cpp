@@ -61,7 +61,6 @@ void DrawScene() {
 void DrawDefaultScene ()
 {
   ResourceManager &rm = ResourceManager::Get();
-  rm.LoadShadersToModels();
   DrawModel(rm.currentLoadedModels["barrel"], Vector3(0, 5, 0), 10, Color(255, 255, 255));
   //DrawSceneGeometry();
 }

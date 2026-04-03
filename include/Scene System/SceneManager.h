@@ -19,6 +19,7 @@ struct SceneManager // Singleton, scene manager
     void LoadSceneByPath(const std::string& path); // Load scenes by file path
     Scene LoadScene(int id); // Load scenes by id of scene
     int GetSceneIDByName(const std::string& name); // Gets scene id, by its name
+    void SwitchScene(int sceneId); // Switches to scene, handles resource swapping
     int currentSceneID = 0;
     Scene ReturnScene(int id); // Return scene object
     private:
