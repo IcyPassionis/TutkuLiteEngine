@@ -11,10 +11,9 @@ enum ScreenState {
 };
 // GameState controls game-related states
 struct GameState {
-    ScreenState screenState; // This saves currently which state is player
-    bool isScreenOnTransition; // If screen is on transition an animation will play
-    bool isFinished; // Is the game finished
-    GameState();
+    ScreenState screenState = MAIN_MENU; // This saves currently which state is player
+    bool isScreenOnTransition = false; // If screen is on transition an animation will play
+    bool isFinished = false; // Is the game finished
 };
 // This struct controls window
 struct WindowStates {
