@@ -17,8 +17,8 @@ public:
     std::string name;
     std::vector<std::string> tags;
     bool isActive;
-    void SetModel(std::string modelName);
-    Model& GetModel() const;
+    void SetModel(const std::string& modelName);
+    const Model& GetModel() const;
     void Update(); // Update Game Object
 };
 #endif

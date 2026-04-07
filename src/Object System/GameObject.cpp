@@ -5,7 +5,7 @@
 #include "ResourceManager.h"
 #include "SceneManager.h"
 
-void GameObject::SetModel(std::string modelName)
+void GameObject::SetModel(const std::string& modelName)
 {
     auto& resourceManager = ResourceManager::Get();
     if (resourceManager.currentLoadedModels.contains(modelName))
@@ -18,7 +18,7 @@ void GameObject::SetModel(std::string modelName)
     }
 }
 
-Model& GameObject::GetModel() const
+const Model& GameObject::GetModel() const
 {
     auto& resourceManager = ResourceManager::Get();
     if (modelName.empty())
