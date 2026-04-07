@@ -25,6 +25,7 @@ target_include_directories(Engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include")
 target_include_directories(Engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/States")
 target_include_directories(Engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/Managers")
 target_include_directories(Engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/Scene System")
+target_include_directories(Engine PUBLIC "${CMAKE_CURRENT_SOURCE_DIR}/include/Object System")
 
 #Linking libraries
 add_library(raygui INTERFACE)
