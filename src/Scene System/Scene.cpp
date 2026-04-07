@@ -31,12 +31,12 @@ void Scene::DrawScene(){
     std::cout << this->name << std::endl;
 }
 
-const std::vector<std::string>& Scene::GetModels(){
+const std::vector<std::string>& Scene::GetAllModels(){
    return loadedModels;
 }
-const std::vector<std::string>& Scene::GetTextures(){
+const std::vector<std::string>& Scene::GetAllTextures(){
     return loaded2DTextures;
 }
-const std::vector<std::string>& Scene::GetIcons(){
+const std::vector<std::string>& Scene::GetAllIcons(){
     return loadedIcons;
 }

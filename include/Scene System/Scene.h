@@ -20,12 +20,12 @@ class Scene // Scene object, serializable
     void AddModel(const std::string& name);
     void AddTexture(const std::string& name);
     void AddIcon(const std::string& name);
-    const std::vector<std::string>& GetModels(); // Gets every model name into an array.
-    const std::vector<std::string>& GetTextures(); // Gets every texture name
-    const std::vector<std::string>& GetIcons(); // Gets every icon name
     void AddModels(std::vector<std::string>& names); // Load multiple models(name) by a vector
     void AddTextures(std::vector<std::string>& names); // Load multiple textures(name) by a vector
     void AddIcons(std::vector<std::string>& names); // Load multiple icons(name) by a vector
+    const std::vector<std::string>& GetAllModels(); // Gets every model name into an array.
+    const std::vector<std::string>& GetAllTextures(); // Gets every texture name
+    const std::vector<std::string>& GetAllIcons(); // Gets every icon name
 private:
     std::vector<std::string> loadedModels; // Loaded models name in this scene
     std::vector<std::string> loaded2DTextures; // Loaded textures in this scene

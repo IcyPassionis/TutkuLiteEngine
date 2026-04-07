@@ -78,7 +78,7 @@ void ResourceManager::LoadAllModelsInScene(const int sceneId)
     const std::string modelsPath = RESOURCES_PATH "Models/";
     const std::string assetsPath = RESOURCES_PATH "Assets/";
     Scene scene = SceneManager::Get().ReturnScene(sceneId);
-    const auto modelNames= scene.GetModels();
+    const auto modelNames= scene.GetAllModels();
 
     for (const auto& entry : std::filesystem::directory_iterator(modelsPath))
     {
@@ -110,9 +110,9 @@ void ResourceManager::LoadPathsInAssets()
 
 void ResourceManager::LoadResourcesForScene(int sceneId) {
     Scene scene = SceneManager::Get().ReturnScene(sceneId);
-    const auto& modelNames = scene.GetModels();
-    const auto& textureNames = scene.GetTextures();
-    const auto& iconNames = scene.GetIcons();
+    const auto& modelNames = scene.GetAllModels();
+    const auto& textureNames = scene.GetAllTextures();
+    const auto& iconNames = scene.GetAllIcons();
     LoadModelsForScene(modelNames);
     LoadShadersToModels();
     LoadTexturesForScene(textureNames);
@@ -121,9 +121,9 @@ void ResourceManager::LoadResourcesForScene(int sceneId) {
 
 void ResourceManager::UnloadResourcesForScene(const int sceneId) {
     Scene scene = SceneManager::Get().ReturnScene(sceneId);
-    const auto& modelNames = scene.GetModels();
-    const auto& textureNames = scene.GetTextures();
-    const auto& iconNames = scene.GetIcons();
+    const auto& modelNames = scene.GetAllModels();
+    const auto& textureNames = scene.GetAllTextures();
+    const auto& iconNames = scene.GetAllIcons();
     UnloadModelsForScene(modelNames);
     UnloadTexturesForScene(textureNames);
     UnloadIconsForScene(iconNames);
@@ -132,12 +132,12 @@ void ResourceManager::SwitchSceneResources(int fromSceneId, int toSceneId) {
     if (fromSceneId == toSceneId) return;
     Scene fromScene = SceneManager::Get().ReturnScene(fromSceneId);
     Scene toScene = SceneManager::Get().ReturnScene(toSceneId);
-    const auto& fromModels = fromScene.GetModels();
-    const auto& toModels = toScene.GetModels();
-    const auto& fromTextures = fromScene.GetTextures();
-    const auto& toTextures = toScene.GetTextures();
-    const auto& fromIcons = fromScene.GetIcons();
-    const auto& toIcons = toScene.GetIcons();
+    const auto& fromModels = fromScene.GetAllModels();
+    const auto& toModels = toScene.GetAllModels();
+    const auto& fromTextures = fromScene.GetAllTextures();
+    const auto& toTextures = toScene.GetAllTextures();
+    const auto& fromIcons = fromScene.GetAllIcons();
+    const auto& toIcons = toScene.GetAllIcons();
     SwitchSceneModels(fromModels, toModels);
     LoadShadersToModels();
     SwitchSceneTextures(fromTextures, toTextures);
