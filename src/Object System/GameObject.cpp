@@ -2,6 +2,9 @@
 
 #include <string>
 
+#include <raylib.h>
+#include <raymath.h>
+
 #include "ResourceManager.h"
 #include "SceneManager.h"
 
@@ -38,5 +41,28 @@ const Model& GameObject::GetModel() const
         return nullModel;
     }
 }
+
+void GameObject::Draw()
+{
+    if (modelName.empty())
+    {
+        return;
+    }
+    auto& resourceManager = ResourceManager::Get();
+    if (!resourceManager.currentLoadedModels.contains(modelName))
+    {
+        return;
+    }
+
+    auto &model = GetModel();
+    
+    Vector3 rotationAxis;
+    float rotationAngle;
+    QuaternionToAxisAngle(transform.rotation, &rotationAxis, &rotationAngle);
+    rotationAngle *= RAD2DEG;
+    
+    DrawModelEx(model, transform.translation, rotationAxis, rotationAngle, transform.scale, WHITE);
+}
+
 
 

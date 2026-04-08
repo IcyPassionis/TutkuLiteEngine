@@ -10,8 +10,10 @@
 class GameObject
 {
     std::string modelName;
+    std::string id;
     void CheckIsActive();
     void UpdateModelTransform();
+    void Draw(); // Draw GameObject
 public:
     Transform transform;
     std::string name;
