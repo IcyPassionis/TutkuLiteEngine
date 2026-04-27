@@ -8,6 +8,7 @@ struct Light;
 
 struct ShaderManager {
     Shader shader; // Loaded main shader
+    Shader depthShader;
     bool isInitialized; // Checks if shaderManager is initialized or not
     std::vector<Light> lights;
     RenderTexture2D shadowMap; // Shadow map texture
@@ -24,24 +25,25 @@ struct ShaderManager {
     friend void SetMaterialColor(Color materialColor); // Sets shader's material color
     friend void SetShininess(float shininess); // Sets shader's shininess
     friend void ReloadShaders(); // Reload shaders
+    void UpdateShadowMap(); // Renders shadow depth pass from directional light's POV
 private:
     int materialColorLoc; // Material color location in the shader program
     int shininessLoc; // Shininess location in the shader program
     int ambientLoc; // Ambient color location in the shader program
     int ambientStrengthLoc; // Ambient strength location in the shader program
+    int lightSpaceMatrixLoc; // lightSpaceMatrix uniform location in lighting shader
+    int shadowMapLoc; // shadowMap sampler location in lighting shader
     ShaderManager() {
         LoadShaders();
     }
     ~ShaderManager() {
         UnloadShaders();
     }
-    void LoadShaders();// Loads shaders
-
+    void LoadShaders(); // Loads shaders
+    void LoadDepthShader();
     void UnloadShaders(); // Unload shader
 
     void ReloadLights(); // Reload every Light to use the current shader.
-
-    void UpdateShadowMap();
 
 };
 // Draw shaders method

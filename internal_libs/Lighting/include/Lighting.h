@@ -4,6 +4,8 @@
 #define LIGHTING_H
 #define MAX_LIGHTS 20
 #include <raylib.h>
+#include <raymath.h>
+#include <cmath>
 struct ShaderManager;
 
 enum TypeOfLight { // Lights type enum
@@ -28,6 +30,17 @@ struct Light {
         this->direction = direction; // Sets light direction
         this->color = color; // Sets light color
         this->intensity = intensity; // Sets light intensity
+        if (type == LIGHT_DIRECTIONAL) {
+            Vector3 lightDir = Vector3Normalize(direction);
+            Vector3 up = {0.0f, 1.0f, 0.0f};
+            if (fabsf(Vector3DotProduct(lightDir, up)) > 0.99f)
+                up = {1.0f, 0.0f, 0.0f};
+            camera.position = Vector3Scale(lightDir, -50.0f);
+            camera.target = Vector3Add(camera.position, lightDir);
+            camera.up = up;
+            camera.fovy = 120.0f;
+            camera.projection = CAMERA_ORTHOGRAPHIC;
+        }
         FindShaderLocations(); // Finds shader program related variables
     }
     void ReloadLight(); // Reload Shaders of light

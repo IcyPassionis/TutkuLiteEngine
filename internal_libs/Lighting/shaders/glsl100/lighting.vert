@@ -10,13 +10,14 @@ uniform mat4 matModel;
 uniform mat4 matNormal;
 
 uniform vec3 viewPos; // Camera Position
+uniform mat4 lightSpaceMatrix;
 
 varying vec3 fragPosition;
 varying vec2 fragTexCoord;
 varying vec4 fragColor;
 varying vec3 fragNormal;
-
 varying vec3 viewDir;
+varying vec4 fragPosLightSpace;
 
 void main()
 {
@@ -27,5 +28,6 @@ void main()
     fragNormal = normalize(vec3(matNormal * vec4(vertexNormal, 0.0)));
 
     viewDir = normalize(viewPos - fragPosition);
+    fragPosLightSpace = lightSpaceMatrix * vec4(fragPosition, 1.0);
     gl_Position = mvp * vec4(vertexPosition, 1.0);
 }
