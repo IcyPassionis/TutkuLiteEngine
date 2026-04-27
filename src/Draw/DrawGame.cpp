@@ -57,6 +57,7 @@ void DrawGame() {
   }
   EndShader();
   EndMode3D();
+  UpdateDebug();
   EndDrawing();
 }
 void DrawScene() {

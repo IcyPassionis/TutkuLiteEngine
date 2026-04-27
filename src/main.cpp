@@ -23,7 +23,6 @@ int main() {
     DrawGame();
     if (IsKeyDown(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_R))
       ReloadShaders();
-    UpdateDebug();
     timeState.UpdateDeltaTime();
   }
   CloseWindow();
