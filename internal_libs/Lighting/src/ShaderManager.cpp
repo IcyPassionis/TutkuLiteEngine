@@ -113,7 +113,7 @@ void ShaderManager::UpdateShadowMap() {
     Matrix lightProj = rlGetMatrixProjection();
 
     BeginShaderMode(depthShader);
-    DrawSceneGeometry();
+    DrawScene();
     EndShaderMode();
 
     EndMode3D();
