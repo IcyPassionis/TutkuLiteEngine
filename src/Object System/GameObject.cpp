@@ -60,7 +60,6 @@ void GameObject::Draw()
     float rotationAngle;
     QuaternionToAxisAngle(transform.rotation, &rotationAxis, &rotationAngle);
     rotationAngle *= RAD2DEG;
-    
     DrawModelEx(model, transform.translation, rotationAxis, rotationAngle, transform.scale, WHITE);
 }
 

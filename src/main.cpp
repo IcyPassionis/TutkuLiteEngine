@@ -25,6 +25,9 @@ int main() {
       ReloadShaders();
     timeState.UpdateDeltaTime();
   }
+  timeState.isRunning = false;
+  if (timeState.FixedThread.joinable())
+    timeState.FixedThread.join();
   CloseWindow();
 }
 void InitGame() {
@@ -33,7 +36,8 @@ void InitGame() {
   if (Settings::Get().isFpsLocked)
     SetTargetFPS(Settings::Get().fps);
   InitializeSingletons();
-  StartScene();
+  LoadScenes();
+  timeState.isRunning = true;
   timeState.FixedThread =
       std::thread(&TimeState::FixedUpdateThread, &timeState);
 }

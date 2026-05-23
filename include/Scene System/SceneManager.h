@@ -2,6 +2,7 @@
 
 #ifndef SCENEMANAGER_H
 #define SCENEMANAGER_H
+#include <mutex>
 #include <string>
 #include "Scene.h"
 
@@ -15,6 +16,7 @@ struct SceneManager // Singleton, scene manager
         return instance;
     }
     SceneManager();
+    void AddScene(Scene &scene);
     void LoadSceneByName(const std::string& name); // Load scenes by name of scene
     void LoadSceneByPath(const std::string& path); // Load scenes by file path
     Scene LoadScene(int id); // Load scenes by id of scene
@@ -22,6 +24,8 @@ struct SceneManager // Singleton, scene manager
     void SwitchScene(int sceneId); // Switches to scene, handles resource swapping
     int currentSceneID = 0;
     Scene ReturnScene(int id); // Return scene object
+    Scene* GetCurrentScene(); // Get pointer to current scene (nullptr if none loaded)
+    std::mutex sceneMutex; // Protects scene access during switches
     private:
     std::vector<Scene> loadedScenes; // List of scenes currently loaded
     void CheckScenesInBinary(); // Checks scenes stored in binary files

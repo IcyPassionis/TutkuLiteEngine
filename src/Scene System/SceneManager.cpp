@@ -29,8 +29,17 @@ int SceneManager::GetSceneIDByName(const std::string &name) {
 }
 
 void SceneManager::SwitchScene(int sceneId) {
+    std::lock_guard lock(sceneMutex);
     ResourceManager::Get().SwitchSceneResources(currentSceneID, sceneId);
     currentSceneID = sceneId;
+}
+
+Scene* SceneManager::GetCurrentScene()
+{
+    if (loadedScenes.empty() || currentSceneID < 0 || currentSceneID >= static_cast<int>(loadedScenes.size())) {
+        return nullptr;
+    }
+    return &loadedScenes[currentSceneID];
 }
 
 void SceneManager::LoadSceneByName(const std::string& name) {
@@ -41,4 +50,11 @@ void SceneManager::LoadSceneByName(const std::string& name) {
 }
 
 void SceneManager::LoadSceneByPath(const std::string& path) {
+}
+void SceneManager::AddScene(Scene &scene){
+    if (scene.name == "Empty")
+    {
+        std::cout << "Dont use empty as a scene name !" << std::endl;
+    }
+    loadedScenes.emplace_back(scene);
 }

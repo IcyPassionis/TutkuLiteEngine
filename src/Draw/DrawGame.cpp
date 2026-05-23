@@ -21,12 +21,14 @@ void InitDraw() {
   SetWindowMonitor(ws.currentMonitor);
   DisableCursor();
 }
-void StartScene() {
-  ShaderManager::Get().lights.emplace_back(LIGHT_DIRECTIONAL, Vector3(0, 0, 0),
-                                           Vector3(1, -1 , 1), WHITE, 1);
+
+void LoadScenes()
+{
+
 }
 
 void DrawSceneGeometry() {
+
   ResourceManager &rm = ResourceManager::Get();
   rm.LoadShadersToModels();
   DrawModel(rm.currentLoadedModels["barrel"], Vector3(0, 5, 0), 10, Color(255, 255, 255));
@@ -65,16 +67,27 @@ void DrawScene() {
   Scene currentScene = sm.LoadScene(sm.currentSceneID);
   if (currentScene.name == "empty") // REVERTS TO DEFAULT SCENE
   {
+    bool isFirstTime = false;
+    if(!isFirstTime)  {
+        PlaceDefaultObjects();
+        isFirstTime = true;
+    }
     DrawDefaultScene();
+
   }
   else // DRAWS CURRENT SCENE !
   {
     currentScene.DrawScene();
   }
 }
+void PlaceDefaultObjects()
+{
+  ShaderManager::Get().lights.emplace_back(LIGHT_DIRECTIONAL, Vector3(0, 20, 0),  Vector3(10, -4 , 10), WHITE, 1);
+}
 void DrawDefaultScene ()
 {
   ResourceManager &rm = ResourceManager::Get();
   DrawModel(rm.currentLoadedModels["barrel"], Vector3(0, 5, 0), 10, Color(255, 255, 255));
+  DrawPlane(Vector3(0, 0, 0), Vector2(100, 100), BLUE);
   //DrawSceneGeometry();
 }
