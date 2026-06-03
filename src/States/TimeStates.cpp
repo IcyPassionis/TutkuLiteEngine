@@ -1,28 +1,33 @@
-#include "raylib.h"
 #include "TimeState.h"
+#include "SceneManager.h"
 #include <atomic>
 #include <chrono>
 #include <thread>
 
-// A physic based update use when calculating anything physics related
-bool TimeState::FixedUpdate() {
-    return isDeltaTime.load();
-}
-
 void TimeState::FixedUpdateThread() {
-    while (!WindowShouldClose()) {
-        std::this_thread::sleep_for(std::chrono::milliseconds(16));
-        accumulator += deltaTime;
+    auto lastTime = std::chrono::steady_clock::now();
+
+    while (isRunning.load()) {
+        auto currentTime = std::chrono::steady_clock::now();
+        std::chrono::duration<float> elapsed = currentTime - lastTime;
+        lastTime = currentTime;
+
+        accumulator += elapsed.count();
+
         while (accumulator >= fixedTimeStep) {
             accumulator -= fixedTimeStep;
-            isDeltaTime.store(true);
+            auto& sm = SceneManager::Get();
+            std::lock_guard<std::mutex> lock(sm.sceneMutex);
+            Scene* currentScene = sm.GetCurrentScene();
+            if (currentScene != nullptr) {
+                currentScene->FixedUpdate();
+            }
         }
-        if (accumulator < fixedTimeStep) {
-            isDeltaTime.store(false);
-        }
+
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 }
+
 void TimeState::UpdateDeltaTime() {
     deltaTime = GetFrameTime();
 }
-

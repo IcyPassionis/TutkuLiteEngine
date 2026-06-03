@@ -9,17 +9,16 @@ struct TimeState {
 
     float deltaTime;
     TimeState() {
-        isDeltaTime = false;
+        isRunning = false;
         fixedTimeStep = 0.016f;
         accumulator = 0.0f;
         std::cout << "MAIN THREAD: " << "Current Fixed Time Step:" << fixedTimeStep << "\n";
     }
     std::thread FixedThread;
-    bool FixedUpdate();
+    std::atomic<bool> isRunning;
     void FixedUpdateThread();
     void UpdateDeltaTime();
     private:
-    std::atomic<bool> isDeltaTime;
     float fixedTimeStep;
     float accumulator;
 };
