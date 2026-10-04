@@ -1,38 +1,25 @@
-
 #include <CameraHeader.h>
 #include <Settings.hpp>
 #include <raylib.h>
 #include <thread>
 
-#include "../internal_libs/Lighting/include/ShaderManager.h"
 #include "DrawGame.h"
 #include "ResourceManager.h"
 #include "TimeState.h"
-#include <LiteDebugger.h>
-
+#include "LiteDebugger.h"
 #include "SceneManager.h"
+#include "Rendering/Renderer3D.h"
 
 static TimeState timeState;
 
-void InitGame();
 void InitializeSingletons();
 int main() {
-  InitGame();
-  while (!WindowShouldClose()) {
-    UpdateCamera(&CameraManager::Get().camera, CAMERA_FREE);
-    DrawGame();
-    if (IsKeyDown(KEY_LEFT_CONTROL) && IsKeyPressed(KEY_R))
-      ReloadShaders();
-    timeState.UpdateDeltaTime();
-  }
-  timeState.isRunning = false;
-  if (timeState.FixedThread.joinable())
-    timeState.FixedThread.join();
-  CloseWindow();
-}
-void InitGame() {
   Settings::Get();
   InitDraw();
+  if (!Renderer3D::Get().Init(GetScreenWidth(), GetScreenHeight())) {
+    CloseWindow();
+    return 1;
+  }
   if (Settings::Get().isFpsLocked)
     SetTargetFPS(Settings::Get().fps);
   InitializeSingletons();
@@ -40,11 +27,24 @@ void InitGame() {
   timeState.isRunning = true;
   timeState.FixedThread =
       std::thread(&TimeState::FixedUpdateThread, &timeState);
+
+  while (!WindowShouldClose()) {
+    UpdateCamera(&CameraManager::Get().camera, CAMERA_FREE);
+    DrawGame();
+    timeState.UpdateDeltaTime();
+  }
+  timeState.isRunning = false;
+  if (timeState.FixedThread.joinable())
+    timeState.FixedThread.join();
+  ShutdownDraw();
+  Renderer3D::Get().Close();
+  CloseWindow();
 }
+
 void InitializeSingletons() {
   CameraManager::Get();
   SceneManager::Get();
   ResourceManager::Get();
-  ShaderManager::Get();
   DebugSettings::Get();
+  PlaceDefaultObjects();
 }

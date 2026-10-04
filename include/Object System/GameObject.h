@@ -4,7 +4,8 @@
 #include <string>
 #include <vector>
 
-#include "raylib.h"
+#include <raylib.h>
+#include <r3d/r3d.h>
 
 
 class GameObject
@@ -13,14 +14,15 @@ class GameObject
     std::string id;
     void CheckIsActive();
     void UpdateModelTransform();
-    void Draw(); // Draw GameObject
 public:
+    GameObject();
+    void Draw() const; // Draw GameObject
     Transform transform;
     std::string name;
     std::vector<std::string> tags;
-    bool isActive;
+    bool isActive = true;
     void SetModel(const std::string& modelName);
-    const Model& GetModel() const;
+    const R3D_Model* GetModel() const;
     void Update(); // Update Game Object
 };
 #endif

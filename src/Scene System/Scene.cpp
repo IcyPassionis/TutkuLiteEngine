@@ -28,7 +28,10 @@ void Scene::AddIcons(std::vector<std::string>& names){
     loadedIcons.insert(loadedIcons.end(), names.begin(), names.end());
 }
 void Scene::DrawScene(){
-
+    for (const GameObject& gameObject : gameObjects) gameObject.Draw();
+}
+void Scene::AddGameObject(const GameObject& gameObject) {
+    gameObjects.push_back(gameObject);
 }
 void Scene::FixedUpdate() {
     std::cout << "Meee" << std::endl;

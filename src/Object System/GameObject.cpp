@@ -1,57 +1,34 @@
 #include "GameObject.h"
 
-#include <string>
-
-#include <raylib.h>
+#include <iostream>
 #include <raymath.h>
 
 #include "ResourceManager.h"
 
-void GameObject::SetModel(const std::string &modelName) {
-  auto &resourceManager = ResourceManager::Get();
-  if (resourceManager.currentLoadedModels.contains(modelName)) {
+GameObject::GameObject()
+    : transform{{0, 0, 0}, QuaternionIdentity(), {1, 1, 1}} {}
+
+void GameObject::SetModel(const std::string& modelName) {
+  auto& resources = ResourceManager::Get();
+  if (resources.currentLoadedModels.contains(modelName)) {
     this->modelName = modelName;
   } else {
-    std::cout << "MAIN THREAD " << "on GameObject::SetModel() " << modelName
+    std::cout << "MAIN THREAD on GameObject::SetModel() " << modelName
               << " NOT FOUND ON RESOURCE MANAGER" << std::endl;
   }
 }
 
-const Model &GameObject::GetModel() const {
-  auto &resourceManager = ResourceManager::Get();
-  if (modelName.empty()) {
-    std::cout << "MAIN THREAD "
-              << "on GameObject::GetModel() No model name has given !"
-              << std::endl;
-    static Model nullModel = {};
-    return nullModel;
-  }
-  if (resourceManager.currentLoadedModels.contains(modelName)) {
-    return resourceManager.currentLoadedModels.at(modelName);
-  } else {
-    std::cout << "MAIN THREAD "
-              << "on GameObject::GetModel() Model Name: " << modelName
-              << " NOT FOUND ON RESOURCE MANAGER !" << std::endl;
-    static Model nullModel = {};
-    return nullModel;
-  }
+const R3D_Model* GameObject::GetModel() const {
+  if (modelName.empty()) return nullptr;
+  const auto& models = ResourceManager::Get().currentLoadedModels;
+  const auto found = models.find(modelName);
+  return found == models.end() ? nullptr : &found->second;
 }
 
-void GameObject::Draw() {
-  if (modelName.empty()) {
-    return;
-  }
-  auto &resourceManager = ResourceManager::Get();
-  if (!resourceManager.currentLoadedModels.contains(modelName)) {
-    return;
-  }
-
-  auto &model = GetModel();
-
-  Vector3 rotationAxis;
-  float rotationAngle;
-  QuaternionToAxisAngle(transform.rotation, &rotationAxis, &rotationAngle);
-  rotationAngle *= RAD2DEG;
-  DrawModelEx(model, transform.translation, rotationAxis, rotationAngle,
-              transform.scale, WHITE);
+void GameObject::Draw() const {
+  if (!isActive) return;
+  const R3D_Model* model = GetModel();
+  if (model == nullptr) return;
+  R3D_DrawModelEx(*model, transform.translation, transform.rotation,
+                  transform.scale);
 }

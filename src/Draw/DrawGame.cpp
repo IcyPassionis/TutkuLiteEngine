@@ -4,90 +4,100 @@
 #include "LiteDebugger.h"
 #include "ResourceManager.h"
 #include "Settings.hpp"
-#include <ShaderManager.h>
-#include <raylib.h>
-
 #include "SceneManager.h"
 #include "States.h"
+#include "Rendering/Renderer3D.h"
+
+#include <r3d/r3d.h>
+#include <raylib.h>
+#include <iostream>
+
 static WindowStates ws;
-float Shininess = 0;
-float LightIntensity = 5;
+static R3D_Mesh defaultPlane = {};
+static R3D_Material defaultPlaneMaterial = {};
+static R3D_Light defaultDirectionalLight = 0;
+static bool defaultObjectsCreated = false;
+
 void InitDraw() {
-  SetConfigFlags(FLAG_MSAA_4X_HINT);
-  SetConfigFlags(FLAG_WINDOW_RESIZABLE);
-  if (Settings::Get().isVsyncEnabled)
-    SetConfigFlags(FLAG_VSYNC_HINT);
+  unsigned int configFlags = FLAG_MSAA_4X_HINT | FLAG_WINDOW_RESIZABLE;
+  if (Settings::Get().isVsyncEnabled) configFlags |= FLAG_VSYNC_HINT;
+  SetConfigFlags(configFlags);
   InitWindow(ws.width, ws.height, ws.title.c_str());
   SetWindowMonitor(ws.currentMonitor);
   DisableCursor();
 }
 
-void LoadScenes()
-{
-
-}
-
-void DrawSceneGeometry() {
-
-  ResourceManager &rm = ResourceManager::Get();
-  rm.LoadShadersToModels();
-  DrawModel(rm.currentLoadedModels["barrel"], Vector3(0, 5, 0), 10, Color(255, 255, 255));
-  DrawPlane(Vector3(0, 0, 0), Vector2(100, 100), BLUE);
-}
+void LoadScenes() {}
 
 void DrawGame() {
-  CameraManager &cameraManager = CameraManager::Get();
-
-  // Shadow pass — must happen before BeginDrawing
-  ShaderManager::Get().UpdateShadowMap();
+  CameraManager& cameraManager = CameraManager::Get();
+  Renderer3D& renderer = Renderer3D::Get();
+  const int width = GetScreenWidth();
+  const int height = GetScreenHeight();
+  if (width > 0 && height > 0) renderer.Resize(width, height);
 
   BeginDrawing();
   ClearBackground(BLACK);
-  BeginMode3D(cameraManager.camera);
-  if (DebugSettings::Get().Show3DGrid)
-    DrawGrid(100, 10);
-  BeginShader(cameraManager.camera);
+  renderer.Begin(cameraManager.camera);
   DrawScene();
-  if (IsKeyDown(KEY_LEFT)) {
-    LightIntensity--;
-    std::cout << "MAIN THREAD: " << "Light Intensity: " << LightIntensity
-              << "\n";
-  } else if (IsKeyDown(KEY_RIGHT)) {
-    LightIntensity++;
-    std::cout << "MAIN THREAD: " << "Light Intensity: " << LightIntensity
-              << "\n";
+  renderer.End();
+
+  if (DebugSettings::Get().Show3DGrid) {
+    BeginMode3D(cameraManager.camera);
+    DrawGrid(100, 10);
+    EndMode3D();
   }
-  EndShader();
-  EndMode3D();
   UpdateDebug();
   EndDrawing();
 }
-void DrawScene() {
-  SceneManager &sm = SceneManager::Get();
-  Scene currentScene = sm.LoadScene(sm.currentSceneID);
-  if (currentScene.name == "empty") // REVERTS TO DEFAULT SCENE
-  {
-    bool isFirstTime = false;
-    if(!isFirstTime)  {
-        PlaceDefaultObjects();
-        isFirstTime = true;
-    }
-    DrawDefaultScene();
 
-  }
-  else // DRAWS CURRENT SCENE !
-  {
-    currentScene.DrawScene();
+void DrawScene() {
+  SceneManager& sceneManager = SceneManager::Get();
+  std::lock_guard<std::mutex> lock(sceneManager.sceneMutex);
+  Scene* currentScene = sceneManager.GetCurrentScene();
+  if (currentScene == nullptr || currentScene->name == "empty") {
+    DrawDefaultScene();
+  } else {
+    currentScene->DrawScene();
   }
 }
-void PlaceDefaultObjects()
-{
-  ShaderManager::Get().lights.emplace_back(LIGHT_DIRECTIONAL, Vector3(0, 20, 0),  Vector3(10, -4 , 10), WHITE, 1);
+
+void PlaceDefaultObjects() {
+  if (defaultObjectsCreated || !Renderer3D::Get().IsInitialized()) return;
+  ResourceManager::Get();
+  defaultObjectsCreated = true;
+  defaultDirectionalLight = R3D_CreateLight(R3D_LIGHT_DIR);
+  R3D_SetLightDirection(defaultDirectionalLight, (Vector3){0.7f, -1.0f, 0.7f});
+  R3D_SetLightColor(defaultDirectionalLight, WHITE);
+  R3D_SetLightEnergy(defaultDirectionalLight, 1.0f);
+  R3D_EnableLight(defaultDirectionalLight);
+  R3D_EnableShadow(defaultDirectionalLight);
+  defaultPlane = R3D_GenMeshPlane(100.0f, 100.0f, 1, 1);
+  defaultPlaneMaterial = R3D_GetDefaultMaterial();
 }
-void DrawDefaultScene ()
-{
-  ResourceManager &rm = ResourceManager::Get();
-  DrawModel(rm.currentLoadedModels["barrel"], Vector3(0, 5, 0), 10, Color(255, 255, 255));
-  DrawPlane(Vector3(0, 0, 0), Vector2(100, 100), BLUE);
-  //DrawSceneGeometry();
+
+void DrawDefaultScene() {
+  PlaceDefaultObjects();
+  ResourceManager& resources = ResourceManager::Get();
+  const auto barrel = resources.currentLoadedModels.find("barrel");
+  if (barrel != resources.currentLoadedModels.end()) {
+    R3D_DrawModelEx(barrel->second, (Vector3){0, 5, 0}, QuaternionIdentity(),
+                    (Vector3){10, 10, 10});
+  }
+  if (defaultObjectsCreated) {
+    R3D_DrawMesh(defaultPlane, defaultPlaneMaterial, (Vector3){0, 0, 0}, 1.0f);
+  }
+}
+
+void ShutdownDraw() {
+  if (defaultDirectionalLight != 0 && Renderer3D::Get().IsInitialized()) {
+    R3D_DestroyLight(defaultDirectionalLight);
+    defaultDirectionalLight = 0;
+  }
+  if (defaultObjectsCreated && Renderer3D::Get().IsInitialized()) {
+    R3D_UnloadMesh(defaultPlane);
+    defaultPlane = {};
+    defaultObjectsCreated = false;
+  }
+  ResourceManager::Get().Shutdown();
 }

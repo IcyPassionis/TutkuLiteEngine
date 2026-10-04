@@ -1,5 +1,4 @@
 #include "ResourceManager.h"
-#include "ShaderManager.h"
 #include <filesystem>
 #include <algorithm>
 #include <format>
@@ -25,21 +24,10 @@ ResourceManager::ResourceManager()
     }
 }
 
-void ResourceManager::LoadShadersToModels()
-{
-    for (auto& model : currentLoadedModels)
-    {
-        if (model.second.materials == nullptr) continue;
-        for (int i = 0; i < model.second.materialCount; i++)
-        {
-            model.second.materials[i].shader = ShaderManager::Get().shader;
-        }
-    }
-}
 void ResourceManager::UnloadAllModels()
 {
     for (auto& model : currentLoadedModels) {
-        UnloadModel(model.second);
+        R3D_UnloadModel(model.second, true);
     }
 
 }
@@ -55,14 +43,10 @@ void ResourceManager::LoadAllModels()
                 std::cout << entry.path().extension() << std::endl;
                 std::string ext = entry.path().extension().string();
                 std::ranges::transform(ext, ext.begin(), tolower);
-                if (ext == ".obj"
-                    || ext == ".fbx"
-                    || ext == ".gltf")
+                if (ext == ".obj" || ext == ".fbx" || ext == ".gltf" || ext == ".glb")
                 {
-                    Model model = LoadModel(entry.path().string().c_str());
-                    std::string name = entry.path().filename().replace_extension();
-                    std::cout << "Loaded model file name: " << name << std::endl;
-                    currentLoadedModels.insert({name, model});
+                    const std::string name = entry.path().filename().replace_extension();
+                    LoadModelIfMissing(name, entry.path().string());
                 }
             }
         }
@@ -71,8 +55,38 @@ void ResourceManager::LoadAllModels()
     {
         std::cout << "RESOURCE THREAD, Models file, doesnt exists. Returns" << std::endl;
     }
-    LoadShadersToModels();
 }
+
+void ResourceManager::LoadModelIfMissing(const std::string& name, const std::string& path)
+{
+    if (currentLoadedModels.contains(name)) return;
+
+    R3D_Model model = R3D_LoadModel(path.c_str());
+    bool isValid = model.meshes != nullptr && model.meshCount > 0 &&
+                   model.meshMaterials != nullptr && model.materials != nullptr &&
+                   model.materialCount > 0;
+    if (isValid) {
+        for (int meshIndex = 0; meshIndex < model.meshCount; ++meshIndex) {
+            const int materialIndex = model.meshMaterials[meshIndex];
+            if (!R3D_IsMeshValid(model.meshes[meshIndex]) || materialIndex < 0 ||
+                materialIndex >= model.materialCount) {
+                isValid = false;
+                break;
+            }
+        }
+    }
+
+    if (!isValid) {
+        std::cout << "RESOURCE THREAD, Failed to load valid R3D model '" << name
+                  << "' from " << path << std::endl;
+        R3D_UnloadModel(model, true);
+        return;
+    }
+
+    std::cout << "Loaded R3D model file name: " << name << std::endl;
+    currentLoadedModels.emplace(name, model);
+}
+
 void ResourceManager::LoadAllModelsInScene(const int sceneId)
 {
     const std::string modelsPath = RESOURCES_PATH "Models/";
@@ -88,19 +102,16 @@ void ResourceManager::LoadAllModelsInScene(const int sceneId)
             std::ranges::transform(ext, ext.begin(), tolower);
             if (ext== ".obj"
                    || ext == ".fbx"
-                   || ext == ".gltf")
+                   || ext == ".gltf" || ext == ".glb")
             {
                 std::string name = entry.path().filename().replace_extension();
                 if (std::ranges::find(modelNames, name) == modelNames.end()){
                     continue;
                 }
-                Model model = LoadModel(entry.path().string().c_str());
-                std::cout << "RESOURCE THREAD, Loaded model file name: " << name << std::endl;
-                currentLoadedModels.insert({name, model});
+                LoadModelIfMissing(name, entry.path().string());
             }
         }
     }
-    ResourceManager::LoadShadersToModels();
 }
 void ResourceManager::LoadPathsInAssets()
 {
@@ -114,7 +125,6 @@ void ResourceManager::LoadResourcesForScene(int sceneId) {
     const auto& textureNames = scene.GetAllTextures();
     const auto& iconNames = scene.GetAllIcons();
     LoadModelsForScene(modelNames);
-    LoadShadersToModels();
     LoadTexturesForScene(textureNames);
     LoadIconsForScene(iconNames);
 }
@@ -139,7 +149,6 @@ void ResourceManager::SwitchSceneResources(int fromSceneId, int toSceneId) {
     const auto& fromIcons = fromScene.GetAllIcons();
     const auto& toIcons = toScene.GetAllIcons();
     SwitchSceneModels(fromModels, toModels);
-    LoadShadersToModels();
     SwitchSceneTextures(fromTextures, toTextures);
     SwitchSceneIcons(fromIcons, toIcons);
 }
@@ -150,7 +159,7 @@ void ResourceManager::SwitchSceneModels(const std::vector<std::string>& fromMode
         bool inFrom = std::ranges::find(fromModels, iteration->first) != fromModels.end();
         bool inTo = std::ranges::find(toModels, iteration->first) != toModels.end();
         if (inFrom && !inTo) {
-            UnloadModel(iteration->second);
+            R3D_UnloadModel(iteration->second, true);
             iteration = currentLoadedModels.erase(iteration);
         } else {
             ++iteration;
@@ -161,13 +170,12 @@ void ResourceManager::SwitchSceneModels(const std::vector<std::string>& fromMode
         if (entry.is_regular_file()) {
             std::string ext = entry.path().extension().string();
             std::ranges::transform(ext, ext.begin(), tolower);
-            if (ext == ".obj" || ext == ".fbx" || ext == ".gltf") {
+            if (ext == ".obj" || ext == ".fbx" || ext == ".gltf" || ext == ".glb") {
                 std::string name = entry.path().filename().replace_extension();
                 bool inTo = std::ranges::find(toModels, name) != toModels.end();
                 bool alreadyLoaded = currentLoadedModels.find(name) != currentLoadedModels.end();
                 if (inTo && !alreadyLoaded) {
-                    Model model = LoadModel(entry.path().string().c_str());
-                    currentLoadedModels.insert({name, model});
+                    LoadModelIfMissing(name, entry.path().string());
                 }
             }
         }
@@ -241,13 +249,10 @@ void ResourceManager::LoadModelsForScene(const std::vector<std::string>& models)
         if (entry.is_regular_file()) {
             std::string ext = entry.path().extension().string();
             std::ranges::transform(ext, ext.begin(), tolower);
-            if (ext == ".obj" || ext == ".fbx" || ext == ".gltf") {
+            if (ext == ".obj" || ext == ".fbx" || ext == ".gltf" || ext == ".glb") {
                 std::string name = entry.path().filename().replace_extension();
                 if (std::ranges::find(models, name) != models.end()) {
-                    if (currentLoadedModels.find(name) == currentLoadedModels.end()) {
-                        Model model = LoadModel(entry.path().string().c_str());
-                        currentLoadedModels.insert({name, model});
-                    }
+                    LoadModelIfMissing(name, entry.path().string());
                 }
             }
         }
@@ -298,7 +303,7 @@ void ResourceManager::UnloadModelsForScene(const std::vector<std::string>& model
 {
     for (auto iteration = currentLoadedModels.begin(); iteration != currentLoadedModels.end(); ) {
         if (std::ranges::find(models, iteration->first) != models.end()) {
-            UnloadModel(iteration->second);
+            R3D_UnloadModel(iteration->second, true);
             iteration = currentLoadedModels.erase(iteration);
         }
         else {
@@ -329,3 +334,14 @@ void ResourceManager::UnloadIconsForScene(const std::vector<std::string>& icons)
     }
 }
 
+
+void ResourceManager::Shutdown() {
+    UnloadAllModels();
+    currentLoadedModels.clear();
+    for (auto& texture : currentLoaded2DTextures) UnloadTexture(texture.second);
+    currentLoaded2DTextures.clear();
+    for (auto& icon : currentLoadedIcons) UnloadImage(icon.second);
+    currentLoadedIcons.clear();
+    for (auto& material : currentLoadedMaterials) R3D_UnloadMaterial(material.second);
+    currentLoadedMaterials.clear();
+}

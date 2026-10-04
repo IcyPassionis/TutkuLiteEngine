@@ -16,6 +16,7 @@ class Scene // Scene object, serializable
     ~Scene(); // Deconstructor
     virtual void Load(); // Load current scene with models,textures,icons.
     void DrawScene(); // Draw current scene to game
+    void AddGameObject(const GameObject& gameObject);
     //virtual void Update(); // Frame-Rate Based update.
     virtual void FixedUpdate(); // Fixed timestep update for physics/deterministic logic
     void AddModel(const std::string& name);
