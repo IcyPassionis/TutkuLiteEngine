@@ -1,55 +1,108 @@
-#define RAYGUI_IMPLEMENTATION
-#include "raygui.h"
 #include "LiteDebugger.h"
+
 #include <raylib.h>
-#include <string>
 
-#include "../../include/CameraHeader.h"
-
-void UpdateDebug() {
-    if (DebugSettings::Get().inDebugMode) {
-        CheckDebugKeys(DebugSettings::Get());
-        UpdateDebugGUI(DebugSettings::Get());
+static void UpdateDebugCursor(DebugSettings& debugSettings, const bool wasExpanded)
+{
+    if (!wasExpanded && debugSettings.isExpanded)
+    {
+        debugSettings.isCursorPreviouslyEnabled = !IsCursorHidden();
+        EnableCursor();
+    }
+    else if (wasExpanded && !debugSettings.isExpanded)
+    {
+        if (debugSettings.isCursorPreviouslyEnabled)
+        {
+            EnableCursor();
+        }
+        else
+        {
+            DisableCursor();
+        }
     }
 }
-void CheckDebugKeys(DebugSettings& debugSettings) {
-    if (IsKeyPressed(KEY_F3)) {
-        debugSettings.inDebugMode = !debugSettings.inDebugMode;
+
+void CheckDebugKeys(DebugSettings& debugSettings)
+{
+    const bool wasExpanded = debugSettings.isExpanded;
+    if (IsKeyPressed(KEY_F3))
+    {
+        const bool isShiftHeld = IsKeyDown(KEY_LEFT_SHIFT) || IsKeyDown(KEY_RIGHT_SHIFT);
+        if (isShiftHeld)
+        {
+            debugSettings.inDebugMode = true;
+            debugSettings.isExpanded = !debugSettings.isExpanded;
+        }
+        else
+        {
+            debugSettings.inDebugMode = !debugSettings.inDebugMode;
+            debugSettings.isExpanded = false;
+        }
+    }
+
+    if (IsKeyPressed(KEY_F4))
+    {
+        if (!debugSettings.isExpanded)
+        {
+            debugSettings.inDebugMode = true;
+            debugSettings.isExpanded = true;
+            debugSettings.isConsoleVisible = true;
+        }
+        else
+        {
+            debugSettings.isConsoleVisible = !debugSettings.isConsoleVisible;
+        }
+    }
+    UpdateDebugCursor(debugSettings, wasExpanded);
+
+    if (!debugSettings.inDebugMode)
+    {
+        return;
+    }
+    if (IsKeyPressed(KEY_H))
+    {
         debugSettings.Show3DGrid = !debugSettings.Show3DGrid;
     }
-    if (debugSettings.inDebugMode) {
-        if (IsKeyPressed(KEY_H)) {
-            debugSettings.Show3DGrid = !debugSettings.Show3DGrid;
-        }
-        if (IsKeyPressed(KEY_F)) {
-            debugSettings.ShowFps = !debugSettings.ShowFps;
-        }
-        if (IsKeyPressed(KEY_P)) {
-            debugSettings.Show3DPosition = !debugSettings.Show3DPosition;
-        }
-        if (IsKeyPressed(KEY_C)) {
-            debugSettings.Show2DPosition = !debugSettings.Show2DPosition;
-            if (debugSettings.Show2DPosition) {
-                EnableCursor();
-            }
-            else {
-                DisableCursor();
-            }
-        }
+    if (IsKeyPressed(KEY_F))
+    {
+        debugSettings.ShowFps = !debugSettings.ShowFps;
+    }
+    if (IsKeyPressed(KEY_P))
+    {
+        debugSettings.Show3DPosition = !debugSettings.Show3DPosition;
+    }
+    if (IsKeyPressed(KEY_C))
+    {
+        debugSettings.Show2DPosition = !debugSettings.Show2DPosition;
     }
 }
-void UpdateDebugGUI(DebugSettings& debugSettings) {
-    if (debugSettings.ShowFps) {
-        std::string fps = "Current Fps: " + std::to_string(GetFPS());
-        GuiTextBox(Rectangle(20,20,150,50),fps.data() , 30, false);
+
+void UpdateDebugInput()
+{
+    DebugSettings& debugSettings = DebugSettings::Get();
+    CheckDebugKeys(debugSettings);
+
+    static const double statisticsStartTime = GetTime();
+    static double lastMemorySampleTime = -1;
+    const double currentTime = GetTime();
+
+    // Ignore startup/resource-loading frames; memory polling stays at once per second.
+    if (currentTime - statisticsStartTime >= 1.0)
+    {
+        debugSettings.frameStatistics.AddFrame(GetFrameTime());
     }
-    if (debugSettings.Show3DPosition) {
-        std::string position = "Camera Position: " + std::to_string(CameraManager::Get().camera.position.x) + " " + std::to_string(CameraManager::Get().camera.position.y) + " " + std::to_string(CameraManager::Get().camera.position.z);
-       //std::string position = "Camera Position: ";
-            GuiTextBox(Rectangle(20,80,400,50),position.data() , 30, false);
+    if (currentTime - lastMemorySampleTime >= 1.0)
+    {
+        debugSettings.memoryStatistics.Sample();
+        lastMemorySampleTime = currentTime;
     }
-    if (debugSettings.Show2DPosition) {
-        std::string position = "Mouse Position: " + std::to_string(GetMouseX()) + " " + std::to_string(GetMouseY());
-        GuiTextBox(Rectangle(20,140,150,50),position.data() , 30, false);
+}
+
+void UpdateDebug()
+{
+    DebugSettings& debugSettings = DebugSettings::Get();
+    if (debugSettings.inDebugMode)
+    {
+        UpdateDebugGUI(debugSettings);
     }
 }

@@ -14,6 +14,7 @@ static TimeState timeState;
 
 void InitializeSingletons();
 int main() {
+  const DebugConsoleCapture consoleCapture;
   Settings::Get();
   InitDraw();
   if (!Renderer3D::Get().Init(GetScreenWidth(), GetScreenHeight())) {
@@ -29,7 +30,10 @@ int main() {
       std::thread(&TimeState::FixedUpdateThread, &timeState);
 
   while (!WindowShouldClose()) {
-    UpdateCamera(&CameraManager::Get().camera, CAMERA_FREE);
+    UpdateDebugInput();
+    if (!DebugSettings::Get().isExpanded) {
+      UpdateCamera(&CameraManager::Get().camera, CAMERA_FREE);
+    }
     DrawGame();
     timeState.UpdateDeltaTime();
   }

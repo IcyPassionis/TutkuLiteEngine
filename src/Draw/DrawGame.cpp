@@ -29,6 +29,35 @@ void InitDraw() {
 
 void LoadScenes() {}
 
+static void UpdateDebugSceneInformation(const Camera3D& camera, const int renderWidth, const int renderHeight)
+{
+    DebugSettings& debugSettings = DebugSettings::Get();
+    if (!debugSettings.isExpanded)
+    {
+        return;
+    }
+
+    SceneManager& sceneManager = SceneManager::Get();
+    const std::lock_guard<std::mutex> lock(sceneManager.sceneMutex);
+    const Scene* const currentScene = sceneManager.GetCurrentScene();
+    const ResourceManager& resourceManager = ResourceManager::Get();
+    const Settings& settings = Settings::Get();
+    DebugSceneInformation& information = debugSettings.sceneInformation;
+
+    information.sceneName = "Default scene";
+    if (currentScene != nullptr && currentScene->name != "empty")
+    {
+        information.sceneName = currentScene->name;
+    }
+    information.modelCount = resourceManager.currentLoadedModels.size();
+    information.textureCount = resourceManager.currentLoaded2DTextures.size();
+    information.cameraPosition = {camera.position.x, camera.position.y, camera.position.z};
+    information.renderWidth = renderWidth;
+    information.renderHeight = renderHeight;
+    information.isVsyncEnabled = settings.isVsyncEnabled;
+    information.fpsLimit = settings.isFpsLocked ? settings.fps : 0;
+}
+
 void DrawGame() {
   CameraManager& cameraManager = CameraManager::Get();
   Renderer3D& renderer = Renderer3D::Get();
@@ -47,6 +76,7 @@ void DrawGame() {
     DrawGrid(100, 10);
     EndMode3D();
   }
+  UpdateDebugSceneInformation(cameraManager.camera, width, height);
   UpdateDebug();
   EndDrawing();
 }
